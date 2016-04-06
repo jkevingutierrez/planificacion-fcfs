@@ -100,17 +100,22 @@
         fila.append('td')
             .html('<button type="button" class="btn btn-danger" aria-label="Left Align"><span class="glyphicon glyphicon-pause" aria-hidden="true"></span> Bloquear</button>')
             .on('click', function() {
+                var tiempo = tiempoActual
                 var filaActual = this.parentNode;
                 var className = filaActual.className;
                 var indexProceso = className.replace('fila-proceso proceso-', '');
                 var proceso = colaListos[indexProceso];
 
-                if (tiempoActual < proceso.finalizacion) {
+                if (tiempo < proceso.finalizacion) {
                     if (proceso.nombre.indexOf('(Reanudado)') !== -1) {
                         proceso.nombre = proceso.nombre.slice(0, proceso.nombre.indexOf('(Reanudado)') - 1);
                     }
 
-                    proceso.bloqueado = tiempoActual;
+                    if (tiempo > proceso.comienzo) {
+                        proceso.rafaga = proceso.finalizacion - tiempo;
+                    }
+
+                    proceso.bloqueado = tiempo;
                     aggregar_proceso_a_bloqueados(proceso);
                     actualizar_tabla_bloqueados(proceso);
                     fila.remove();
