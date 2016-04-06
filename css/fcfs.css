@@ -24,6 +24,16 @@
     padding-left: 5px;
 }
 
+.footer {
+    background-color: black;
+    color: #eee;
+    text-align: center;
+}
+
+.footer ul {
+    list-style-type: none;
+}
+
 .axis path,
 .axis line {
   fill: none;
