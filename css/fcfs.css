@@ -1,7 +1,7 @@
-.container .jumbotron, .container-fluid .jumbotron {
+.container .jumbotron,
+.container-fluid .jumbotron {
     position: relative;
-    padding-left: 15px;
-    padding-right: 15px;
+    padding: 30px 15px;
 }
 
 .table-container {
@@ -51,6 +51,7 @@
   stroke: #777;
   stroke-dasharray: 2,2;
 }
+
 .bar rect {
   shape-rendering: crispEdges;
 }
@@ -75,10 +76,4 @@
 	fill: steelblue;
 	stroke: black;
 	stroke-width:1;
-}
-
-@media screen and (min-width:768px) {
-    .header-fixed {
-        top: 48px;
-    }
 }
