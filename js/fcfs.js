@@ -65,6 +65,9 @@
         var tbody = tabla.getElementsByTagName('tbody')[0];
 
         var fila = document.createElement('tr');
+        fila.classList.add('fila-proceso');
+        fila.classList.add('proceso-' + (colaListos.length - 1));
+
         var columnaNombre = document.createElement('td');
         columnaNombre.innerText = proceso.nombre;
         fila.appendChild(columnaNombre);
