@@ -42,7 +42,7 @@
     }
 
     function crear_primer_proceso() {
-        var nombreInicial = 'Proceso A';
+        var nombreInicial = 'Proceso 0';
         var rafagaInicial = 8;
         return crear_proceso(nombreInicial, rafagaInicial);
     }

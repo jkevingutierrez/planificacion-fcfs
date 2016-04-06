@@ -1,4 +1,12 @@
 .table-container {
-    max-height: 310px;
+    max-height: 315px;
     overflow-y: scroll;
+}
+
+.table-fixed {
+    position: fixed;
+    width: 100%;
+    top: 116px;
+    background: #eee;
+    max-width: 1022px;
 }
