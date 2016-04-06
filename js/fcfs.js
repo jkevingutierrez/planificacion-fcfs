@@ -60,19 +60,61 @@
         };
     }
 
-    function inicio() {
-        crear_primer_proceso();
+    function aggregar_columna(proceso) {
+        var tabla = document.getElementById('tabla_procesos');
+        var tbody = tabla.getElementsByTagName('tbody')[0];
 
-        for (var index = 0; index <= 5; index++) {
-            generar_proceso();
+        var fila = document.createElement('tr');
+        var columnaNombre = document.createElement('td');
+        columnaNombre.innerText = proceso.nombre;
+        fila.appendChild(columnaNombre);
+
+        var columnaLlegada = document.createElement('td');
+        columnaLlegada.innerText = proceso.llegada;
+        fila.appendChild(columnaLlegada);
+
+        var columnaRafaga = document.createElement('td');
+        columnaRafaga.innerText = proceso.rafaga;
+        fila.appendChild(columnaRafaga);
+
+        var columnaComienzo = document.createElement('td');
+        columnaComienzo.innerText = proceso.comienzo;
+        fila.appendChild(columnaComienzo);
+
+        var columnaFinalizacion = document.createElement('td');
+        columnaFinalizacion.innerText = proceso.finalizacion;
+        fila.appendChild(columnaFinalizacion);
+
+        var columnaRetorno = document.createElement('td');
+        columnaRetorno.innerText = proceso.retorno;
+        fila.appendChild(columnaRetorno);
+
+        var columnaEspera = document.createElement('td');
+        columnaEspera.innerText = proceso.espera;
+        fila.appendChild(columnaEspera);
+
+        tbody.appendChild(fila);
+    }
+
+    function inicio() {
+
+        var proceso = crear_primer_proceso();
+        var tiempoEspera = 5000;
+        var procesosIniciales = 5;
+
+        aggregar_columna(proceso);
+
+        for (var index = 0; index < procesosIniciales; index++) {
+            proceso = generar_proceso();
+            aggregar_columna(proceso);
         };
 
         imprimir_colaListos();
 
         window.setInterval(function () {
             var proceso = generar_proceso();
-            console.log(proceso);
-        }, 5000);
+            aggregar_columna(proceso);
+        }, tiempoEspera);
     }
 
     // Ejecución de funciones
