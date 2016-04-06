@@ -1,55 +1,80 @@
-function Proceso(){ 
-	this.nombre= "X";
-	this.llegada= 0;
-	this.rafaga= 0;
-	this.comienzo = 0;
-	this.finalizacion = this.rafaga;
-	this.retorno = this.finalizacion - this.llegada;
-	this.espera = this.retorno - this.rafaga;
-};
+(function() {
+    'use strict';
 
-var cola = [];
+    // Variables globales
+    var colaListos = [];
 
-function primer_proceso(){
-	var procesoA = new Proceso();
-	procesoA.nombre = "A";
-	procesoA.rafaga = 8;
-	procesoA.finalizacion = procesoA.rafaga;
-	procesoA.retorno = procesoA.finalizacion - procesoA.llegada;
-	procesoA.espera = procesoA.retorno - procesoA.rafaga;
-	add_process(procesoA);
-	return procesoA;
+    // Clases
+    function Proceso() {
+        this.nombre = 'Proceso';
+        this.llegada = 0;
+        this.rafaga = 0;
+        this.comienzo = 0;
+        this.finalizacion = 0;
+        this.retorno = 0;
+        this.espera = 0;
+    };
 
-}
-function random_proceso(){
-	var procesoX = new Proceso();
-	procesoX.llegada = cola.length;
-	procesoX.nombre = cola.length;
-	procesoX.rafaga = (Math.floor(Math.random()*10)+1);
-	procesoX.finalizacion = (Math.floor(Math.random()*10)+1);
-	tam = cola.length;
-	for (var i = 0; i < tam; i++) {
-		console.log("----------------------------");
-		console.log(cola[i].rafaga);
-		console.log("----------------------------");
-		procesoX.finalizacion = cola[i].rafaga + procesoX.finalizacion;
-	};
-	procesoX.retorno = procesoX.finalizacion - procesoX.llegada;
-	procesoX.espera = procesoX.retorno - procesoX.rafaga;
-	add_process(procesoX);
-}
+    // Funciones
+    function aggregar_proceso_a_listos(proceso) {
+        colaListos.push(proceso);
+    }
 
-function add_process(proceso){
-	cola.push(proceso);
-}
+    function crear_proceso(nombre, rafaga) {
+        var proceso = new Proceso();
+        var colaListosLength = colaListos.length;
 
-function inicio(){
-	primer_proceso();
-	for (var i = 0; i <= 5; i++) {
-		random_proceso();
-	};
-	for (var i = 0; i < cola.length; i++) {
-		console.log(cola[i]);
-	};
-	
-}
+        proceso.nombre = nombre;
+        proceso.rafaga = rafaga;
+        proceso.llegada = colaListosLength;
+        proceso.finalizacion = rafaga;
+
+        for (var index = 0; index < colaListosLength; index++) {
+            proceso.finalizacion += colaListos[index].rafaga;
+        };
+
+        proceso.retorno = proceso.finalizacion - proceso.llegada;
+        proceso.espera = proceso.retorno - proceso.rafaga;
+        proceso.comienzo = proceso.espera + proceso.llegada;
+
+        aggregar_proceso_a_listos(proceso);
+        return proceso;
+    }
+
+    function crear_primer_proceso() {
+        var nombre = 'Proceso A';
+        var rafaga = 8;
+        return crear_proceso(nombre, rafaga);
+    }
+
+    function generar_proceso() {
+        var nombre = 'Proceso ' + colaListos.length;
+        var rafaga = Math.floor((Math.random() * 10) + 1);
+        return crear_proceso(nombre, rafaga);
+    }
+
+    function imprimir_colaListos() {
+        var colaListosLength = colaListos.length;
+        for (var index = 0; index < colaListosLength; index++) {
+            console.log(colaListos[index]);
+        };
+    }
+
+    function inicio() {
+        crear_primer_proceso();
+
+        for (var index = 0; index <= 5; index++) {
+            generar_proceso();
+        };
+
+        imprimir_colaListos();
+
+        window.setInterval(function () {
+            var proceso = generar_proceso();
+            console.log(proceso);
+        }, 5000);
+    }
+
+    // Ejecución de funciones
+    inicio();
+})();

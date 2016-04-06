@@ -1,3 +1,3 @@
-# planificacion-fcfs
+# Primero en llegar, primero en ser atendido
 
-Algoritmo de planificación de procesos Firts-Come, First-Served
+Algoritmo de planificación de procesos First-Come, First-Served
