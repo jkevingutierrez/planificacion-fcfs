@@ -119,6 +119,9 @@
                     aggregar_proceso_a_bloqueados(proceso);
                     actualizar_tabla_bloqueados(proceso);
                     fila.remove();
+
+                    var contenedor = document.getElementsByClassName('table-container')[1];
+                    contenedor.scrollTop = contenedor.scrollHeight;
                 } else {
                     alert('No se puede bloquear un proceso con tiempo de finalización menor al tiempo actual');
                 }

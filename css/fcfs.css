@@ -1,4 +1,31 @@
+.jumbotron {
+    position: relative;
+}
+
 .table-container {
     max-height: 315px;
     overflow-y: scroll;
+    position: relative;
+}
+
+.header-fixed {
+    background-color: #eee;
+    left: 15px;
+    position: absolute;
+    top: 30px;;
+    width: calc(100% - 30px);
+}
+
+.header-fixed th {
+    background-color: #eee;
+    padding-bottom: 20px;
+    padding-left: 10px;
+}
+
+@media screen and (min-width:768px) {
+    .header-fixed {
+        left: 60px;
+        top: 48px;
+        width: calc(100% - 120px);
+    }
 }
