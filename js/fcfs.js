@@ -61,50 +61,39 @@
     }
 
     function aggregar_columna(proceso) {
-        var tabla = document.getElementById('tabla_procesos');
-        var tbody = tabla.getElementsByTagName('tbody')[0];
+        var tabla = d3.select('#tabla_procesos');
+        var tbody = tabla.select('tbody');
 
-        var fila = document.createElement('tr');
-        fila.classList.add('fila-proceso');
-        fila.classList.add('proceso-' + (colaListos.length - 1));
+        var fila = tbody.append('tr')
+            .attr('class', 'fila-proceso proceso-' + (colaListos.length - 1));
 
-        var columnaNombre = document.createElement('td');
-        columnaNombre.innerText = proceso.nombre;
-        fila.appendChild(columnaNombre);
+        fila.append('td')
+            .html(proceso.nombre);
 
-        var columnaLlegada = document.createElement('td');
-        columnaLlegada.innerText = proceso.llegada;
-        fila.appendChild(columnaLlegada);
+        fila.append('td')
+            .html(proceso.llegada);
 
-        var columnaRafaga = document.createElement('td');
-        columnaRafaga.innerText = proceso.rafaga;
-        fila.appendChild(columnaRafaga);
+        fila.append('td')
+            .html(proceso.rafaga);
 
-        var columnaComienzo = document.createElement('td');
-        columnaComienzo.innerText = proceso.comienzo;
-        fila.appendChild(columnaComienzo);
+        fila.append('td')
+            .html(proceso.comienzo);
 
-        var columnaFinalizacion = document.createElement('td');
-        columnaFinalizacion.innerText = proceso.finalizacion;
-        fila.appendChild(columnaFinalizacion);
+        fila.append('td')
+            .html(proceso.finalizacion);
 
-        var columnaRetorno = document.createElement('td');
-        columnaRetorno.innerText = proceso.retorno;
-        fila.appendChild(columnaRetorno);
+        fila.append('td')
+            .html(proceso.retorno);
 
-        var columnaEspera = document.createElement('td');
-        columnaEspera.innerText = proceso.espera;
-        fila.appendChild(columnaEspera);
-
-        tbody.appendChild(fila);
+        fila.append('td')
+            .html(proceso.espera);
     }
 
     function inicio() {
-
-        var proceso = crear_primer_proceso();
         var tiempoEspera = 5000;
         var procesosIniciales = 5;
 
+        var proceso = crear_primer_proceso();
         aggregar_columna(proceso);
 
         for (var index = 0; index < procesosIniciales; index++) {
