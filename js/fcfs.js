@@ -87,6 +87,9 @@
 
         fila.append('td')
             .html(proceso.espera);
+
+        var objDiv = document.getElementsByClassName('table-container')[0];
+        objDiv.scrollTop = objDiv.scrollHeight;
     }
 
     function inicio() {
@@ -111,4 +114,5 @@
 
     // Ejecución de funciones
     inicio();
+
 })();

@@ -1,4 +1,4 @@
-.tabla {
-    text-align: center;
-    width: 100%;
+.table-container {
+    max-height: 350px;
+    overflow-y: scroll;
 }
