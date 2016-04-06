@@ -5,7 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
     <meta name="viewport" content="width=device-width, initial-scale=1"/>
     <title>Algoritmo de planificación FCFS</title>
-    <link rel="stylesheet" href="css/vendor/bootstrap.min.css">
+    <link rel="stylesheet" href="css/vendor/bootstrap/css/bootstrap.min.css">
     <link rel="stylesheet" href="css/fcfs.css">
 </head>
 <body>
@@ -14,6 +14,8 @@
     </header>
 
     <main role="main" class="container">
+        <h3>Tiempo: <span class="time">0</span></h3>
+        <h2>Listos</h2>
         <div class="jumbotron">
             <div class="table-container">
                 <table id="tabla_procesos" class="table table-hover">
@@ -26,28 +28,28 @@
                             <th>T. Finalización</th>
                             <th>T. Retorno</th>
                             <th>T. Espera</th>
-                        </tr>
-                    </thead>
-                    <tbody></tbody>
-                </table>
-
-                <table id="" class="table table-fixed">
-                    <thead>
-                        <tr>
-                            <th>Proceso</th>
-                            <th>T. Llegada</th>
-                            <th>T. Rafaga</th>
-                            <th>T. Comienzo</th>
-                            <th>T. Finalización</th>
-                            <th>T. Retorno</th>
-                            <th>T. Espera</th>
+                            <th></th>
                         </tr>
                     </thead>
                     <tbody></tbody>
                 </table>
             </div>
+        </div>
 
-
+        <h2>Bloqueados</h2>
+        <div class="jumbotron">
+            <div class="table-container">
+                <table id="tabla_bloqueados" class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th>Proceso</th>
+                            <th>T. Bloqueado</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
         </div>
 
         <div class="chart-container"></div>
