@@ -25,6 +25,10 @@
         colaListos.push(proceso);
     }
 
+    function aggregar_proceso_a_bloqueados(proceso) {
+        colaBloqueados.push(proceso);
+    }
+
     function crear_proceso(nombre, rafaga) {
         var proceso = new Proceso();
         var colaListosLength = colaListos.length;
@@ -107,7 +111,7 @@
                     }
 
                     proceso.bloqueado = tiempoActual;
-                    colaBloqueados.push(proceso);
+                    aggregar_proceso_a_bloqueados(proceso);
                     actualizar_tabla_bloqueados(proceso);
                     fila.remove();
                 } else {
@@ -144,10 +148,9 @@
                     proceso.nombre = proceso.nombre + ' (Reanudado)';
                 }
 
-                proceso.llegada = colaListos.length;
+                var procesoActualizado = crear_proceso(proceso.nombre, proceso.rafaga);
 
-                colaListos.push(proceso);
-                aggregar_columna(proceso);
+                aggregar_columna(procesoActualizado);
                 filaActual.remove();
             });
 
