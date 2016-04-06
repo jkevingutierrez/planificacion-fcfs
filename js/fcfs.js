@@ -88,8 +88,8 @@
         fila.append('td')
             .html(proceso.espera);
 
-        var objDiv = document.getElementsByClassName('table-container')[0];
-        objDiv.scrollTop = objDiv.scrollHeight;
+        var contenedor = document.getElementsByClassName('table-container')[0];
+        contenedor.scrollTop = contenedor.scrollHeight;
     }
 
     function inicio() {
