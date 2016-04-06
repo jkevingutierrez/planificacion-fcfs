@@ -47,6 +47,7 @@
         proceso.comienzo = proceso.espera + proceso.llegada;
 
         aggregar_proceso_a_listos(proceso);
+        agregar_columna(proceso);
         pintar_proceso(proceso.espera, proceso.comienzo, proceso.llegada, proceso.finalizacion, proceso.rafaga);
         return proceso;
     }
@@ -70,7 +71,7 @@
         };
     }
 
-    function aggregar_columna(proceso) {
+    function agregar_columna(proceso) {
         var tabla = d3.select('#tabla_procesos');
         var tbody = tabla.select('tbody');
 
@@ -162,9 +163,7 @@
                     proceso.nombre = proceso.nombre + ' (Reanudado)';
                 }
 
-                var procesoActualizado = crear_proceso(proceso.nombre, proceso.rafaga);
-
-                aggregar_columna(procesoActualizado);
+                crear_proceso(proceso.nombre, proceso.rafaga);
                 filaActual.remove();
             });
 
@@ -173,19 +172,16 @@
     }
 
     function inicio() {
-        var proceso = crear_primer_proceso();
-        aggregar_columna(proceso);
+        crear_primer_proceso();
 
         for (var index = 0; index < procesosIniciales; index++) {
-            proceso = generar_proceso();
-            aggregar_columna(proceso);
+            generar_proceso();
         };
 
         imprimir_colaListos();
 
         window.setInterval(function () {
-            var proceso = generar_proceso();
-            aggregar_columna(proceso);
+            generar_proceso();
         }, tiempoEspera);
 
         window.setInterval(function () {
@@ -197,8 +193,7 @@
     inicio();
 
     d3.select('.btn-add').on('click', function() {
-        var proceso = generar_proceso();
-        aggregar_columna(proceso);
+        generar_proceso();
     });
 
 })();
