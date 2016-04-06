@@ -9,6 +9,11 @@
     var numeroProcesos = 0;
     var procesosIniciales = 5;
 
+    d3.select(".add").on("click", function(){
+        var g = generar_proceso();
+        aggregar_columna(g);
+    });
+
     // Clases
     function Proceso() {
         this.nombre = 'Proceso';
@@ -47,6 +52,7 @@
         proceso.comienzo = proceso.espera + proceso.llegada;
 
         aggregar_proceso_a_listos(proceso);
+        pintar_proceso(proceso.espera, proceso.comienzo, proceso.llegada, proceso.finalizacion, proceso.rafaga);
         return proceso;
     }
 
