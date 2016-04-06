@@ -29,3 +29,45 @@
         width: calc(100% - 120px);
     }
 }
+.axis path,
+.axis line {
+  fill: none;
+  stroke: #000;
+  shape-rendering: crispEdges;
+}
+
+.y.axis path {
+  display: none;
+  stroke: #777;
+  stroke-dasharray: 2,2;
+}
+
+.y.axis line {
+  stroke: #777;
+  stroke-dasharray: 2,2;	
+}
+.bar rect {
+  shape-rendering: crispEdges;
+}
+
+.bar text {
+  fill: #fff;
+}
+
+.axis path, .axis line {
+  fill: none;
+  stroke: #000;
+  shape-rendering: crispEdges;
+}
+
+.gris{
+	fill: #BCBCBC;
+	stroke: black;
+	stroke-width:1;
+}
+
+.azul{
+	fill: steelblue;
+	stroke: black;
+	stroke-width:1;
+}
