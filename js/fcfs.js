@@ -9,11 +9,6 @@
     var numeroProcesos = 0;
     var procesosIniciales = 5;
 
-    d3.select(".add").on("click", function(){
-        var g = generar_proceso();
-        aggregar_columna(g);
-    });
-
     // Clases
     function Proceso() {
         this.nombre = 'Proceso';
@@ -104,7 +99,7 @@
             .html(proceso.espera);
 
         fila.append('td')
-            .html('<button type="button" class="btn btn-danger" aria-label="Left Align"><span class="glyphicon glyphicon-pause" aria-hidden="true"></span> Bloquear</button>')
+            .html('<button type="button" class="btn btn-danger"><span class="glyphicon glyphicon-pause" aria-hidden="true"></span></button>')
             .on('click', function() {
                 var tiempo = tiempoActual
                 var filaActual = this.parentNode;
@@ -129,7 +124,12 @@
                     var contenedor = document.getElementsByClassName('table-container')[1];
                     contenedor.scrollTop = contenedor.scrollHeight;
                 } else {
-                    alert('No se puede bloquear un proceso con tiempo de finalización menor al tiempo actual');
+                    swal({
+                        title: "Error!",
+                        text: "No se puede bloquear un proceso cuyo tiempo de finalización sea menor al tiempo actual",
+                        type: "error",
+                        confirmButtonText: "OK"
+                    });
                 }
             });
 
@@ -151,7 +151,7 @@
             .html(proceso.bloqueado);
 
         fila.append('td')
-            .html('<button type="button" class="btn btn-success" aria-label="Left Align"><span class="glyphicon glyphicon-play" aria-hidden="true"></span> Reanudar</button>')
+            .html('<button type="button" class="btn btn-success"><span class="glyphicon glyphicon-play" aria-hidden="true"></span></button>')
             .on('click', function() {
                 var filaActual = this.parentNode;
                 var className = filaActual.className;
@@ -195,5 +195,10 @@
 
     // Ejecución de funciones
     inicio();
+
+    d3.select('.btn-add').on('click', function() {
+        var proceso = generar_proceso();
+        aggregar_columna(proceso);
+    });
 
 })();

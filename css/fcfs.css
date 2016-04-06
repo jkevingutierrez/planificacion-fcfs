@@ -1,5 +1,7 @@
-.jumbotron {
+.container .jumbotron, .container-fluid .jumbotron {
     position: relative;
+    padding-left: 15px;
+    padding-right: 15px;
 }
 
 .table-container {
@@ -18,17 +20,10 @@
 
 .header-fixed th {
     background-color: #eee;
-    padding-bottom: 20px;
-    padding-left: 10px;
+    padding-bottom: 25px;
+    padding-left: 5px;
 }
 
-@media screen and (min-width:768px) {
-    .header-fixed {
-        left: 60px;
-        top: 48px;
-        width: calc(100% - 120px);
-    }
-}
 .axis path,
 .axis line {
   fill: none;
@@ -44,7 +39,7 @@
 
 .y.axis line {
   stroke: #777;
-  stroke-dasharray: 2,2;	
+  stroke-dasharray: 2,2;
 }
 .bar rect {
   shape-rendering: crispEdges;
@@ -70,4 +65,10 @@
 	fill: steelblue;
 	stroke: black;
 	stroke-width:1;
+}
+
+@media screen and (min-width:768px) {
+    .header-fixed {
+        top: 48px;
+    }
 }

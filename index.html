@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1"/>
     <title>Algoritmo de planificación FCFS</title>
     <link rel="stylesheet" href="css/vendor/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/vendor/sweetalert.css">
     <link rel="stylesheet" href="css/fcfs.css">
 </head>
 <body>
@@ -15,10 +16,28 @@
 
     <main role="main" class="container">
         <h3>Tiempo: <span class="time">0</span></h3>
-        <h2>Listos</h2>
-        <div class="jumbotron">
-            <div class="table-container">
-                <table id="tabla_procesos" class="table table-hover">
+        <div class="ready-container col-md-8">
+            <h2>Listos</h2>
+            <div class="jumbotron">
+                <div class="table-container">
+                    <table id="tabla_procesos" class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th>Proceso</th>
+                                <th>T. Llegada</th>
+                                <th>T. Rafaga</th>
+                                <th>T. Comienzo</th>
+                                <th>T. Finalización</th>
+                                <th>T. Retorno</th>
+                                <th>T. Espera</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
+
+                <table class="header-fixed">
                     <thead>
                         <tr>
                             <th>Proceso</th>
@@ -28,62 +47,46 @@
                             <th>T. Finalización</th>
                             <th>T. Retorno</th>
                             <th>T. Espera</th>
-                            <th></th>
+                            <th style="width: 12%;"></th>
                         </tr>
                     </thead>
-                    <tbody></tbody>
                 </table>
             </div>
-
-            <table class="header-fixed">
-                <thead>
-                    <tr>
-                        <th>Proceso</th>
-                        <th>T. Llegada</th>
-                        <th>T. Rafaga</th>
-                        <th>T. Comienzo</th>
-                        <th>T. Finalización</th>
-                        <th>T. Retorno</th>
-                        <th>T. Espera</th>
-                        <th style="width: 164px;"></th>
-                    </tr>
-                </thead>
-            </table>
+            <button type="button" class="btn btn-primary btn-add">Agregar Proceso</button>
         </div>
-        <button class="button add">Agregar Proceso</button>
 
+        <div class="locked-container col-md-4">
+            <h2>Bloqueados</h2>
+            <div class="jumbotron">
+                <div class="table-container">
+                    <table id="tabla_bloqueados" class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th>Proceso</th>
+                                <th>T. Bloqueo</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
 
-        <h2>Bloqueados</h2>
-        <div class="jumbotron">
-            <div class="table-container">
-                <table id="tabla_bloqueados" class="table table-hover">
+                <table class="header-fixed">
                     <thead>
                         <tr>
                             <th>Proceso</th>
-                            <th>T. Bloqueado</th>
-                            <th></th>
+                            <th>T. Bloqueo</th>
+                            <th style="width: 33%;"></th>
                         </tr>
                     </thead>
-                    <tbody></tbody>
                 </table>
             </div>
-
-            <table class="header-fixed">
-                <thead>
-                    <tr>
-                        <th>Proceso</th>
-                        <th>T. Bloqueado</th>
-                        <th style="width: 407px;"></th>
-                    </tr>
-                </thead>
-            </table>
-
-        </div>
+       </div>
 
         <div class="chart-container">
             <svg>
             </svg>
-        </div>       
+        </div>
     </main>
 
     <footer class="container">
@@ -95,6 +98,7 @@
     </footer>
 
     <script src="js/vendor/d3.min.js"></script>
+    <script src="js/vendor/sweetalert.min.js"></script>
     <script type="text/javascript" src="js/paint.js"></script>
     <script src="js/fcfs.js"></script>
 </body>
