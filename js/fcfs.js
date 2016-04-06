@@ -52,13 +52,13 @@
     }
 
     function crear_primer_proceso() {
-        var nombreInicial = 'Proceso 0';
+        var nombreInicial = 'Proceso ' + (numeroProcesos++);
         var rafagaInicial = 8;
         return crear_proceso(nombreInicial, rafagaInicial);
     }
 
     function generar_proceso() {
-        var nombre = 'Proceso ' + (++numeroProcesos);
+        var nombre = 'Proceso ' + (numeroProcesos++);
         var rafaga = Math.floor((Math.random() * 10) + 1);
         return crear_proceso(nombre, rafaga);
     }
