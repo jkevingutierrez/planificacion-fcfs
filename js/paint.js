@@ -1,4 +1,4 @@
-'use strict';
+"use strict";
 
 var margin = {top: 20, right: 0, bottom: 20, left: 0},
     width = 960 - margin.left - margin.right,
@@ -54,8 +54,9 @@ var bar = svg.selectAll(".bar")
     .attr("transform", function(d) { return "translate(" + 0 + "," + (y(d.y) - 51) + ")"; });
 
 function pintar_proceso(proceso, length){
-	d3.select("svg").attr("height", Number(d3.select("svg").attr('height')) + 51);
-	d3.select("svg").attr("width", Number(d3.select("svg").attr('width')) + (31*10));
+	console.log("entra");
+	d3.select("svg").attr("height", Number(d3.select("svg").attr("height")) + 51);
+	d3.select("svg").attr("width", Number(d3.select("svg").attr("width")) + (31*10));
 	bar.append("rect")
 	    .attr("x", proceso.llegada*31) //x=5-->155
 	    .attr("class", "gris")
