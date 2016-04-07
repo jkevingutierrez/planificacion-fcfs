@@ -43,3 +43,9 @@
     overflow: scroll;
     width: 100%;
 }
+
+@media screen and (max-width: 600px) {
+    .header-fixed {
+        display: none;
+    }
+}
