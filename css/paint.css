@@ -5,6 +5,17 @@
   shape-rendering: crispEdges;
 }
 
+.x.axis path {
+  display: none;
+  stroke: #777;
+  stroke-dasharray: 2,2;
+}
+
+.x.axis line {
+  stroke: #777;
+  stroke-dasharray: 2,2;
+}
+
 .y.axis path {
   display: none;
   stroke: #777;
@@ -34,13 +45,11 @@
 .espera {
 	fill: #BCBCBC;
 	stroke: black;
-	stroke-width: 1;
 }
 
 .ejecucion {
 	fill: steelblue;
 	stroke: black;
-	stroke-width: 1;
 }
 
 .bloqueado {
