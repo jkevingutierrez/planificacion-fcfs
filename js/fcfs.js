@@ -87,25 +87,25 @@
             .attr('id', 'proceso-' + (colaListos.length - 1));
 
         fila.append('td')
-            .html(proceso.nombre);
+            .text(proceso.nombre);
 
         fila.append('td')
-            .html(proceso.llegada);
+            .text(proceso.llegada);
 
         fila.append('td')
-            .html(proceso.rafaga);
+            .text(proceso.rafaga);
 
         fila.append('td')
-            .html(proceso.comienzo);
+            .text(proceso.comienzo);
 
         fila.append('td')
-            .html(proceso.finalizacion);
+            .text(proceso.finalizacion);
 
         fila.append('td')
-            .html(proceso.retorno);
+            .text(proceso.retorno);
 
         fila.append('td')
-            .html(proceso.espera);
+            .text(proceso.espera);
 
         fila.append('td')
             .html('<button type="button" class="btn btn-danger" title="Bloquear proceso"><span class="glyphicon glyphicon-pause" aria-hidden="true"></span></button>')
@@ -166,13 +166,13 @@
             .attr('id', 'proceso-' + (colaBloqueados.length - 1));
 
         fila.append('td')
-            .html(proceso.nombre);
+            .text(proceso.nombre);
 
         fila.append('td')
-            .html(proceso.bloqueado);
+            .text(proceso.bloqueado);
 
         fila.append('td')
-            .html(rafagaTotal);
+            .text(rafagaTotal);
 
         fila.append('td')
             .html('<button type="button" class="btn btn-success" title="Reanudar proceso"><span class="glyphicon glyphicon-play" aria-hidden="true"></span></button>')
@@ -202,10 +202,10 @@
         }, tiempoEspera);
 
         window.setInterval(function () {
-            d3.select('.time').html(++tiempoActual);
+            d3.select('.time').text(++tiempoActual);
             colaListos.forEach(function(procesoInterno, indexProceso) {
                 if (procesoInterno.comienzo <= tiempoActual && procesoInterno.finalizacion >= tiempoActual) {
-                    d3.select('.proceso-ejecucion').html(procesoInterno.nombre);
+                    d3.select('.proceso-ejecucion').text(procesoInterno.nombre);
                     d3.selectAll('.ejecutandose').classed('ejecutandose', false);
                     d3.select('.fila-proceso#proceso-' + indexProceso).classed('ejecutandose', true);
                     d3.selectAll('.ejecucion.proceso-' + indexProceso).classed('ejecutandose', true);
