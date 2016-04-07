@@ -1,3 +1,5 @@
+'use strict';
+
 var margin = {top: 20, right: 0, bottom: 20, left: 0},
     width = 960 - margin.left - margin.right,
     height = 500 - margin.top - margin.bottom;
@@ -31,7 +33,7 @@ var svg = d3.select("svg")
 
 var gy = svg.append("g")
     .attr("class", "y axis")
-    .call(yAxis)
+    .call(yAxis);
 
 var gx = svg.append("g")
     .attr("class", "x axis")
@@ -52,7 +54,6 @@ var bar = svg.selectAll(".bar")
     .attr("transform", function(d) { return "translate(" + 0 + "," + (y(d.y) - 51) + ")"; });
 
 function pintar_proceso(proceso, length){
-	console.log("entra");
 	d3.select("svg").attr("height", Number(d3.select("svg").attr('height')) + 51);
 	d3.select("svg").attr("width", Number(d3.select("svg").attr('width')) + (31*10));
 	bar.append("rect")
@@ -60,7 +61,8 @@ function pintar_proceso(proceso, length){
 	    .attr("class", "gris")
 	    .attr("y", -1*(height-(51*length)))
 	    .attr("width", proceso.espera*31)
-	    .attr("height", 51)
+	    .attr("height", 51);
+
 	bar.append("rect")
 	    .attr("x", proceso.comienzo*31)//x=5-->155
 	    .attr("class", "azul")
@@ -70,9 +72,6 @@ function pintar_proceso(proceso, length){
 
     bar.append("text")
 	    .attr("x", proceso.llegada*31 + 20) //x=5-->155
-	    .attr("class", "gris")
 	    .attr("y", -1*(height-(51*length)) + 30)
-	    .attr("width", proceso.espera*31)
-	    .attr("height", 51)
 	    .text(proceso.nombre);
 }
