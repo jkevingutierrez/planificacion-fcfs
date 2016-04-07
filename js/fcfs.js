@@ -6,8 +6,9 @@
     var colaBloqueados = [];
     var numeroProcesos = 0;
     var tiempoActual = 0;
+    var tiempoLlegada = 0;
 
-    var tiempoEspera = 5000;
+    var tiempoEspera = 5001;
     var procesosIniciales = 5;
 
     // Clases
@@ -34,9 +35,13 @@
         var proceso = new Proceso();
         var colaListosLength = colaListos.length;
 
+        if (tiempoActual > tiempoLlegada) {
+            tiempoLlegada = tiempoActual;
+        }
+
         proceso.nombre = nombre;
         proceso.rafaga = rafaga;
-        proceso.llegada = colaListosLength;
+        proceso.llegada = tiempoLlegada++;
         proceso.finalizacion = rafaga;
 
         for (var index = 0; index < colaListosLength; index++) {
@@ -102,7 +107,7 @@
             .html(proceso.espera);
 
         fila.append('td')
-            .html('<button type="button" class="btn btn-danger"><span class="glyphicon glyphicon-pause" aria-hidden="true"></span></button>')
+            .html('<button type="button" class="btn btn-danger" title="Bloquear proceso"><span class="glyphicon glyphicon-pause" aria-hidden="true"></span></button>')
             .on('click', function() {
                 var tiempo = tiempoActual
                 var filaActual = this.parentNode;
@@ -154,7 +159,7 @@
             .html(proceso.bloqueado);
 
         fila.append('td')
-            .html('<button type="button" class="btn btn-success"><span class="glyphicon glyphicon-play" aria-hidden="true"></span></button>')
+            .html('<button type="button" class="btn btn-success" title="Reanudar proceso"><span class="glyphicon glyphicon-play" aria-hidden="true"></span></button>')
             .on('click', function() {
                 var filaActual = this.parentNode;
                 var idProceso = filaActual.id.replace('proceso-', '');

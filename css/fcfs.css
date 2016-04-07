@@ -1,3 +1,4 @@
+
 .container .jumbotron,
 .container-fluid .jumbotron {
     position: relative;
@@ -8,13 +9,18 @@
     height: 315px;
     overflow-y: scroll;
     position: relative;
+    text-align: center;
+}
+
+td {
+    max-width: 90px;
 }
 
 .header-fixed {
     background-color: #eee;
     left: 15px;
     position: absolute;
-    top: 30px;;
+    top: 30px;
     width: calc(100% - 30px);
 }
 
@@ -22,6 +28,8 @@
     background-color: #eee;
     padding-bottom: 25px;
     padding-left: 5px;
+    padding-right: 5px;
+    text-align: center;
 }
 
 .footer {
