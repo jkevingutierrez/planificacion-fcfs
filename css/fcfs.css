@@ -36,6 +36,13 @@
     text-align: center;
 }
 
+.chart-container {
+    height: 400px;
+    overflow: scroll;
+    width: 100%;
+    max-width: 970px;
+}
+
 .axis path,
 .axis line {
   fill: none;

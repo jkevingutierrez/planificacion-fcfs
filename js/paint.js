@@ -25,7 +25,7 @@ var yAxis = d3.svg.axis()
 var svg = d3.select("svg")
     .attr("width", width + margin.left + margin.right)
     .attr("height", height + margin.top + margin.bottom)
-  .append("g")
+    .append("g")
     .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
 var gy = svg.append("g")
@@ -46,23 +46,24 @@ var data = d3.layout.histogram()
 
 var bar = svg.selectAll(".bar")
     .data(data)
-  .enter().append("g")
+    .enter().append("g")
     .attr("class", "bar")
-    .attr("transform", function(d) { return "translate(" + x(d.x) + "," + y(d.y) + ")"; });
+    .attr("transform", function(d) { return "translate(" + 0 + "," + y(d.y) + ")"; });
 
-function pintar_proceso(espera, comienzo, llegada, finalizacion, rafaga){
+function pintar_proceso(espera, comienzo, llegada, finalizacion, rafaga, length){
 	console.log("entra");
-	d3.select("svg").attr("height", height+58);
+	d3.select("svg").attr("height", Number(d3.select("svg").attr('height')) + 57);
+	d3.select("svg").attr("width", Number(d3.select("svg").attr('width')) + (57*10));
 	bar.append("rect")
-	    .attr("x", llegada*31)//x=5-->155
+	    .attr("x", llegada*31) //x=5-->155
 	    .attr("class", "gris")
-	    .attr("y", -1*(height-(58*llegada)))
+	    .attr("y", -1*(height-(57*length)))
 	    .attr("width", espera*31)
 	    .attr("height", 57);
 	bar.append("rect")
 	    .attr("x", comienzo*31)//x=5-->155
 	    .attr("class", "azul")
-	    .attr("y", -1*(height-(58*llegada)))
+	    .attr("y", -1*(height-(57*length)))
 	    .attr("width", rafaga*31)
 	    .attr("height", 57);
 }
