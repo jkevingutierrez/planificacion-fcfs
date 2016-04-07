@@ -4,9 +4,10 @@
     // Variables globales
     var colaListos = [];
     var colaBloqueados = [];
-    var tiempoActual = 0;
-    var tiempoEspera = 5000;
     var numeroProcesos = 0;
+    var tiempoActual = 0;
+
+    var tiempoEspera = 5000;
     var procesosIniciales = 5;
 
     // Clases
@@ -76,7 +77,8 @@
         var tbody = tabla.select('tbody');
 
         var fila = tbody.append('tr')
-            .attr('class', 'fila-proceso proceso-' + (colaListos.length - 1));
+            .attr('class', 'fila-proceso')
+            .attr('id', 'proceso-' + (colaListos.length - 1));
 
         fila.append('td')
             .html(proceso.nombre);
@@ -104,9 +106,8 @@
             .on('click', function() {
                 var tiempo = tiempoActual
                 var filaActual = this.parentNode;
-                var className = filaActual.className;
-                var indexProceso = className.replace('fila-proceso proceso-', '');
-                var proceso = colaListos[indexProceso];
+                var idProceso = filaActual.id.replace('proceso-', '');
+                var proceso = colaListos[idProceso];
 
                 if (tiempo < proceso.finalizacion) {
                     if (proceso.nombre.indexOf('(Reanudado)') !== -1) {
@@ -143,7 +144,8 @@
         var tbody = tabla.select('tbody');
 
         var fila = tbody.append('tr')
-            .attr('class', 'fila-proceso proceso-' + (colaBloqueados.length - 1));
+            .attr('class', 'fila-proceso')
+            .attr('id', 'proceso-' + (colaBloqueados.length - 1));
 
         fila.append('td')
             .html(proceso.nombre);
@@ -155,9 +157,8 @@
             .html('<button type="button" class="btn btn-success"><span class="glyphicon glyphicon-play" aria-hidden="true"></span></button>')
             .on('click', function() {
                 var filaActual = this.parentNode;
-                var className = filaActual.className;
-                var indexProceso = className.substr(className.length - 1);
-                var proceso = colaBloqueados[indexProceso];
+                var idProceso = filaActual.id.replace('proceso-', '');
+                var proceso = colaBloqueados[idProceso];
 
                 if (proceso.nombre.indexOf('Reanudado') === -1) {
                     proceso.nombre = proceso.nombre + ' (Reanudado)';
