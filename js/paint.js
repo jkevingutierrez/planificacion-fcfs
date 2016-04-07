@@ -1,8 +1,7 @@
 "use strict";
 
-var margin = {top: 20, right: 0, bottom: 20, left: 0},
-    width = 960 - margin.left - margin.right,
-    height = 500 - margin.top - margin.bottom;
+var width = 960,
+    height = 500;
 
 var formatNumber = d3.format(1);
 
@@ -26,18 +25,19 @@ var yAxis = d3.svg.axis()
     .tickFormat("");
 
 var svg = d3.select("svg")
-    .attr("width", width + margin.left + margin.right)
-    .attr("height", height + margin.top + margin.bottom)
+    .attr("width", width)
+    .attr("height", height)
     .append("g")
-    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+    .attr("transform", "translate(0, 30)");
 
 var gy = svg.append("g")
     .attr("class", "y axis")
+    .attr("transform", "translate(5, 0)")
     .call(yAxis);
 
 var gx = svg.append("g")
     .attr("class", "x axis")
-    .attr("transform", "translate(0," + height + ")")
+    .attr("transform", "translate(5," + height + ")")
     .call(xAxis);
 
 //------------
@@ -51,7 +51,7 @@ var bar = svg.selectAll(".bar")
     .data(data)
     .enter().append("g")
     .attr("class", "bar")
-    .attr("transform", function(d) { return "translate(" + 0 + "," + (y(d.y) - 51) + ")"; });
+    .attr("transform", function(d) { return "translate(5," + (y(d.y) - 51) + ")"; });
 
 function pintar_proceso(proceso, length){
 	d3.select("svg").attr("height", Number(d3.select("svg").attr("height")) + 51);

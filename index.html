@@ -17,11 +17,29 @@
 
     <main role="main" class="container">
         <h3>Tiempo transcurrido: <span class="time">0</span></h3>
-        <div class="ready-container col-lg-8">
-            <h2>Listos</h2>
-            <div class="jumbotron">
-                <div class="table-container">
-                    <table id="tabla_procesos" class="table table-hover">
+        <div class="row">
+            <div class="ready-container col-lg-8">
+                <h2>Listos</h2>
+                <div class="jumbotron">
+                    <div class="table-container">
+                        <table id="tabla_procesos" class="table table-hover">
+                            <thead>
+                                <tr>
+                                    <th style="width: 90px;">Proceso</th>
+                                    <th>T. Llegada</th>
+                                    <th>T. Rafaga</th>
+                                    <th>T. Comienzo</th>
+                                    <th>T. Finalización</th>
+                                    <th>T. Retorno</th>
+                                    <th>T. Espera</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+                    </div>
+
+                    <table class="header-fixed">
                         <thead>
                             <tr>
                                 <th style="width: 90px;">Proceso</th>
@@ -31,58 +49,43 @@
                                 <th>T. Finalización</th>
                                 <th>T. Retorno</th>
                                 <th>T. Espera</th>
-                                <th></th>
+                                <th style="width: 10%;"></th>
                             </tr>
                         </thead>
-                        <tbody></tbody>
                     </table>
                 </div>
-
-                <table class="header-fixed">
-                    <thead>
-                        <tr>
-                            <th style="width: 90px;">Proceso</th>
-                            <th>T. Llegada</th>
-                            <th>T. Rafaga</th>
-                            <th>T. Comienzo</th>
-                            <th>T. Finalización</th>
-                            <th>T. Retorno</th>
-                            <th>T. Espera</th>
-                            <th style="width: 10%;"></th>
-                        </tr>
-                    </thead>
-                </table>
+                <button type="button" class="btn btn-primary btn-add">Agregar Proceso</button>
             </div>
-            <button type="button" class="btn btn-primary btn-add">Agregar Proceso</button>
-        </div>
 
-        <div class="locked-container col-lg-4">
-            <h2>Bloqueados</h2>
-            <div class="jumbotron">
-                <div class="table-container">
-                    <table id="tabla_bloqueados" class="table table-hover">
+            <div class="locked-container col-lg-4">
+                <h2>Bloqueados</h2>
+                <div class="jumbotron">
+                    <div class="table-container">
+                        <table id="tabla_bloqueados" class="table table-hover">
+                            <thead>
+                                <tr>
+                                    <th>Proceso</th>
+                                    <th>T. Bloqueo</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+                    </div>
+
+                    <table class="header-fixed">
                         <thead>
                             <tr>
                                 <th>Proceso</th>
                                 <th>T. Bloqueo</th>
-                                <th></th>
+                                <th style="width: 30%;"></th>
                             </tr>
                         </thead>
-                        <tbody></tbody>
                     </table>
                 </div>
-
-                <table class="header-fixed">
-                    <thead>
-                        <tr>
-                            <th>Proceso</th>
-                            <th>T. Bloqueo</th>
-                            <th style="width: 30%;"></th>
-                        </tr>
-                    </thead>
-                </table>
             </div>
-       </div>
+        </div>
+
 
         <div class="chart-container">
             <svg>

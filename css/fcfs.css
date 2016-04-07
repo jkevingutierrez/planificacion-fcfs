@@ -37,8 +37,9 @@
 }
 
 .chart-container {
-    height: 400px;
+    height: 500px;
+    margin: 50px auto;
+    max-width: 960px;
     overflow: scroll;
     width: 100%;
-    max-width: 970px;
 }
