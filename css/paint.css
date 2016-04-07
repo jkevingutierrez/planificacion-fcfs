@@ -31,18 +31,18 @@
   shape-rendering: crispEdges;
 }
 
-.gris{
+.espera {
 	fill: #BCBCBC;
 	stroke: black;
 	stroke-width:1;
 }
 
-.azul{
+.ejecucion {
 	fill: steelblue;
 	stroke: black;
 	stroke-width:1;
 }
 
-.red {
+.bloqueado {
     fill: red;
 }

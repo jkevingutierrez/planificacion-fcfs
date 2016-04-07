@@ -117,7 +117,7 @@
 
                 if (tiempo < proceso.finalizacion) {
                     d3.selectAll('.proceso-' + idProceso)
-                        .classed('red', true);
+                        .classed('bloqueado', true);
 
                     if (proceso.nombre.indexOf('(Reanudado)') !== -1) {
                         proceso.nombre = proceso.nombre.slice(0, proceso.nombre.indexOf('(Reanudado)') - 1);
