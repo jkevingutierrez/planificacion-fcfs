@@ -120,7 +120,7 @@
 
     function bloquear_proceso(tiempo, idProceso, fila) {
         var proceso = colaListos[idProceso];
-        if (tiempo < proceso.finalizacion && tiempo > proceso.comienzo) {
+        if (tiempo <= proceso.finalizacion && tiempo >= proceso.comienzo) {
             d3.selectAll('.proceso-' + idProceso)
                 .classed('bloqueado', true);
 
@@ -221,9 +221,9 @@
             var tiempo = tiempoActual
             var idProceso = d3.select(this).attr('class').replace(/proceso-|ejecucion|ejecutandose| /gi, '');
             console.log(idProceso);
-            var filaActual = d3.select('#proceso-' + idProceso);
+            var fila = d3.select('#proceso-' + idProceso);
 
-            bloquear_proceso(tiempo, idProceso, filaActual);
+            bloquear_proceso(tiempo, idProceso, fila);
         });
     }
 
