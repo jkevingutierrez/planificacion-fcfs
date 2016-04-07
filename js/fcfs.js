@@ -115,21 +115,28 @@
                 var idProceso = filaActual.id.replace('proceso-', '');
                 var proceso = colaListos[idProceso];
 
-                if (tiempo < proceso.finalizacion) {
+                if (tiempo < proceso.finalizacion && tiempo > proceso.comienzo) {
                     d3.selectAll('.proceso-' + idProceso)
                         .classed('bloqueado', true);
+
+                    d3.selectAll('.ejecucion.proceso-' + idProceso)
+                        .attr('width', (tiempo - proceso.comienzo) * 31).each (function() {
+                            d3.selectAll('.texto-restante.proceso-' + idProceso)
+                                .attr('x', ((proceso.finalizacion) * 31) - 20)
+                                .text(proceso.finalizacion - tiempo);
+                            d3.selectAll('.texto-rafaga.proceso-' + idProceso)
+                                .text(tiempo - proceso.comienzo);
+                        });
 
                     if (proceso.nombre.indexOf('(Reanudado)') !== -1) {
                         proceso.nombre = proceso.nombre.slice(0, proceso.nombre.indexOf('(Reanudado)') - 1);
                     }
 
-                    if (tiempo > proceso.comienzo) {
-                        proceso.rafaga = proceso.finalizacion - tiempo;
-                    }
-
+                    var rafagaTotal = proceso.rafaga;
+                    proceso.rafaga = proceso.finalizacion - tiempo;
                     proceso.bloqueado = tiempo;
                     aggregar_proceso_a_bloqueados(proceso);
-                    actualizar_tabla_bloqueados(proceso);
+                    actualizar_tabla_bloqueados(proceso, rafagaTotal);
                     fila.remove();
 
                     var contenedor = document.getElementsByClassName('table-container')[1];
@@ -137,7 +144,7 @@
                 } else {
                     swal({
                         title: "Error!",
-                        text: "No se puede bloquear un proceso cuyo tiempo de finalización sea menor al tiempo actual",
+                        text: "No se puede bloquear un proceso que no se encuentre en su sección critica",
                         type: "error",
                         confirmButtonText: "OK"
                     });
@@ -148,12 +155,12 @@
         contenedor.scrollTop = contenedor.scrollHeight;
     }
 
-    function actualizar_tabla_bloqueados(proceso) {
+    function actualizar_tabla_bloqueados(proceso, rafagaTotal) {
         var tabla = d3.select('#tabla_bloqueados');
         var tbody = tabla.select('tbody');
 
         var fila = tbody.append('tr')
-            .attr('class', 'fila-proceso')
+            .attr('class', 'fila-bloqueado')
             .attr('id', 'proceso-' + (colaBloqueados.length - 1));
 
         fila.append('td')
@@ -161,6 +168,9 @@
 
         fila.append('td')
             .html(proceso.bloqueado);
+
+        fila.append('td')
+            .html(rafagaTotal);
 
         fila.append('td')
             .html('<button type="button" class="btn btn-success" title="Reanudar proceso"><span class="glyphicon glyphicon-play" aria-hidden="true"></span></button>')
@@ -194,6 +204,14 @@
 
         window.setInterval(function () {
             d3.select('.time').html(++tiempoActual);
+            colaListos.forEach(function(procesoInterno, indexProceso) {
+                if (procesoInterno.comienzo <= tiempoActual && procesoInterno.finalizacion >= tiempoActual) {
+                    d3.select('.proceso-ejecucion').html(procesoInterno.nombre);
+                    d3.selectAll('.ejecutandose').classed('ejecutandose', false);
+                    d3.select('.fila-proceso#proceso-' + indexProceso).classed('ejecutandose', true);
+                    d3.selectAll('.ejecucion.proceso-' + indexProceso).classed('ejecutandose', true);
+                }
+            })
         }, 1000);
 
         d3.select('.btn-add').on('click', function() {

@@ -44,6 +44,15 @@
     width: 100%;
 }
 
+.ejecutandose,
+.ejecutandose:hover {
+    background-color: green;
+}
+
+.table-hover>tbody>tr.ejecutandose:hover {
+    background-color: green;
+}
+
 @media screen and (max-width: 600px) {
     .header-fixed {
         display: none;

@@ -55,3 +55,15 @@
 .bloqueado {
     fill: red;
 }
+
+.restante {
+    opacity: .1;
+}
+
+.ejecutandose {
+    fill: green;
+}
+
+.texto-restante {
+    fill: black;
+}
