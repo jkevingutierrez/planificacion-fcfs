@@ -55,7 +55,7 @@
 
         aggregar_proceso_a_listos(proceso);
         agregar_columna(proceso);
-        pintar_proceso(proceso.espera, proceso.comienzo, proceso.llegada, proceso.finalizacion, proceso.rafaga, colaListos.length);
+        pintar_proceso(proceso, colaListos.length);
         return proceso;
     }
 

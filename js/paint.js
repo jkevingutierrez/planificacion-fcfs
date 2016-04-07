@@ -51,20 +51,28 @@ var bar = svg.selectAll(".bar")
     .attr("class", "bar")
     .attr("transform", function(d) { return "translate(" + 0 + "," + (y(d.y) - 51) + ")"; });
 
-function pintar_proceso(espera, comienzo, llegada, finalizacion, rafaga, length){
+function pintar_proceso(proceso, length){
 	console.log("entra");
 	d3.select("svg").attr("height", Number(d3.select("svg").attr('height')) + 51);
 	d3.select("svg").attr("width", Number(d3.select("svg").attr('width')) + (31*10));
 	bar.append("rect")
-	    .attr("x", llegada*31) //x=5-->155
+	    .attr("x", proceso.llegada*31) //x=5-->155
 	    .attr("class", "gris")
 	    .attr("y", -1*(height-(51*length)))
-	    .attr("width", espera*31)
-	    .attr("height", 51);
+	    .attr("width", proceso.espera*31)
+	    .attr("height", 51)
 	bar.append("rect")
-	    .attr("x", comienzo*31)//x=5-->155
+	    .attr("x", proceso.comienzo*31)//x=5-->155
 	    .attr("class", "azul")
 	    .attr("y", -1*(height-(51*length)))
-	    .attr("width", rafaga*31)
+	    .attr("width", proceso.rafaga*31)
 	    .attr("height", 51);
+
+    bar.append("text")
+	    .attr("x", proceso.llegada*31 + 20) //x=5-->155
+	    .attr("class", "gris")
+	    .attr("y", -1*(height-(51*length)) + 30)
+	    .attr("width", proceso.espera*31)
+	    .attr("height", 51)
+	    .text(proceso.nombre);
 }
