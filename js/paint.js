@@ -54,7 +54,6 @@ var bar = svg.selectAll(".bar")
     .attr("transform", function(d) { return "translate(" + 0 + "," + (y(d.y) - 51) + ")"; });
 
 function pintar_proceso(proceso, length){
-	console.log("entra");
 	d3.select("svg").attr("height", Number(d3.select("svg").attr("height")) + 51);
 	d3.select("svg").attr("width", Number(d3.select("svg").attr("width")) + (31*10));
 	bar.append("rect")
