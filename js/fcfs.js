@@ -71,7 +71,7 @@
         return crear_proceso(nombre, rafaga);
     }
 
-    function imprimir_colaListos() {
+    function imprimir_cola_listos() {
         var colaListosLength = colaListos.length;
         for (var index = 0; index < colaListosLength; index++) {
             console.log(colaListos[index]);
@@ -185,8 +185,6 @@
             generar_proceso();
         };
 
-        imprimir_colaListos();
-
         window.setInterval(function () {
             generar_proceso();
         }, tiempoEspera);
@@ -194,13 +192,13 @@
         window.setInterval(function () {
             d3.select('.time').html(++tiempoActual);
         }, 1000);
+
+        d3.select('.btn-add').on('click', function() {
+            generar_proceso();
+        });
     }
 
     // Ejecución de funciones
     inicio();
-
-    d3.select('.btn-add').on('click', function() {
-        generar_proceso();
-    });
 
 })();
