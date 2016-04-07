@@ -56,6 +56,9 @@ function pintar_proceso(proceso, length) {
 	d3.select("svg").attr("height", Number(d3.select("svg").attr("height")) + 61);+
 	d3.select("svg").attr("width", Number(d3.select("svg").attr("width")) + (31 * proceso.rafaga) + 5);
 
+    yAxis.tickSize(d3.select("svg").attr("width"));
+    gy.call(yAxis);
+
 	bar.append("rect")
 	    .attr("x", proceso.llegada*31) //x=5-->155
 	    .attr("class", "espera proceso-" + (length-1))
