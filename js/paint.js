@@ -53,7 +53,7 @@ var bar = svg.selectAll(".bar")
     .attr("transform", function(d) { return "translate(5, " + (y(d.y) - 55.5) + ")"; });
 
 function pintar_proceso(proceso, length) {
-	d3.select("svg").attr("height", Number(d3.select("svg").attr("height")) + 70);+
+	d3.select("svg").attr("height", Number(d3.select("svg").attr("height")) + 61);+
 	d3.select("svg").attr("width", Number(d3.select("svg").attr("width")) + (31 * proceso.rafaga) + 5);
 
 	bar.append("rect")
