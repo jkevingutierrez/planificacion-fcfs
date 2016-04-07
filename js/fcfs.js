@@ -34,9 +34,10 @@
     function crear_proceso(nombre, rafaga) {
         var proceso = new Proceso();
         var colaListosLength = colaListos.length;
+        var tiempo = tiempoActual;
 
-        if (tiempoActual > tiempoLlegada) {
-            tiempoLlegada = tiempoActual;
+        if (tiempo > tiempoLlegada) {
+            tiempoLlegada = tiempo;
         }
 
         proceso.nombre = nombre;
