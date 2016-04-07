@@ -5,15 +5,16 @@
     padding: 30px 15px;
 }
 
+.table>tbody>tr>td {
+    max-width: 90px;
+    vertical-align: middle;
+}
+
 .table-container {
     height: 315px;
     overflow-y: scroll;
     position: relative;
     text-align: center;
-}
-
-td {
-    max-width: 90px;
 }
 
 .header-fixed {
@@ -36,10 +37,6 @@ td {
     background-color: black;
     color: #eee;
     text-align: center;
-}
-
-.footer ul {
-    list-style-type: none;
 }
 
 .axis path,
