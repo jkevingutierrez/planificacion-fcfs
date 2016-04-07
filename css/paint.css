@@ -52,16 +52,16 @@
 	stroke: black;
 }
 
-.bloqueado {
-    fill: red;
-}
-
 .restante {
     opacity: .1;
 }
 
 .ejecutandose {
     fill: green;
+}
+
+.bloqueado {
+    fill: red;
 }
 
 .texto-restante {

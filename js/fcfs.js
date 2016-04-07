@@ -113,46 +113,48 @@
                 var tiempo = tiempoActual
                 var filaActual = this.parentNode;
                 var idProceso = filaActual.id.replace('proceso-', '');
-                var proceso = colaListos[idProceso];
 
-                if (tiempo < proceso.finalizacion && tiempo > proceso.comienzo) {
-                    d3.selectAll('.proceso-' + idProceso)
-                        .classed('bloqueado', true);
-
-                    d3.selectAll('.ejecucion.proceso-' + idProceso)
-                        .attr('width', (tiempo - proceso.comienzo) * 31).each (function() {
-                            d3.selectAll('.texto-restante.proceso-' + idProceso)
-                                .attr('x', ((proceso.finalizacion) * 31) - 20)
-                                .text(proceso.finalizacion - tiempo);
-                            d3.selectAll('.texto-rafaga.proceso-' + idProceso)
-                                .text(tiempo - proceso.comienzo);
-                        });
-
-                    if (proceso.nombre.indexOf('(Reanudado)') !== -1) {
-                        proceso.nombre = proceso.nombre.slice(0, proceso.nombre.indexOf('(Reanudado)') - 1);
-                    }
-
-                    var rafagaTotal = proceso.rafaga;
-                    proceso.rafaga = proceso.finalizacion - tiempo;
-                    proceso.bloqueado = tiempo;
-                    aggregar_proceso_a_bloqueados(proceso);
-                    actualizar_tabla_bloqueados(proceso, rafagaTotal);
-                    fila.remove();
-
-                    var contenedor = document.getElementsByClassName('table-container')[1];
-                    contenedor.scrollTop = contenedor.scrollHeight;
-                } else {
-                    swal({
-                        title: "Error!",
-                        text: "No se puede bloquear un proceso que no se encuentre en su sección critica",
-                        type: "error",
-                        confirmButtonText: "OK"
-                    });
-                }
+                bloquear_proceso(tiempo, idProceso, filaActual)
             });
+    }
 
-        var contenedor = document.getElementsByClassName('table-container')[0];
-        contenedor.scrollTop = contenedor.scrollHeight;
+    function bloquear_proceso(tiempo, idProceso, fila) {
+        var proceso = colaListos[idProceso];
+        if (tiempo < proceso.finalizacion && tiempo > proceso.comienzo) {
+            d3.selectAll('.proceso-' + idProceso)
+                .classed('bloqueado', true);
+
+            d3.selectAll('.ejecucion.proceso-' + idProceso)
+                .attr('width', (tiempo - proceso.comienzo) * 31);
+
+            d3.selectAll('.texto-restante.proceso-' + idProceso)
+                .attr('x', ((proceso.finalizacion) * 31) - 20)
+                .text(proceso.finalizacion - tiempo);
+
+            d3.selectAll('.texto-rafaga.proceso-' + idProceso)
+                .text(tiempo - proceso.comienzo);
+
+            if (proceso.nombre.indexOf('(Reanudado)') !== -1) {
+                proceso.nombre = proceso.nombre.slice(0, proceso.nombre.indexOf('(Reanudado)') - 1);
+            }
+
+            var rafagaTotal = proceso.rafaga;
+            proceso.rafaga = proceso.finalizacion - tiempo;
+            proceso.bloqueado = tiempo;
+            aggregar_proceso_a_bloqueados(proceso);
+            actualizar_tabla_bloqueados(proceso, rafagaTotal);
+            fila.remove();
+
+            var contenedor = document.getElementsByClassName('table-container')[1];
+            contenedor.scrollTop = contenedor.scrollHeight;
+        } else {
+            swal({
+                title: "Error!",
+                text: "No se puede bloquear un proceso que no se encuentra en su sección critica",
+                type: "error",
+                confirmButtonText: "OK"
+            });
+        }
     }
 
     function actualizar_tabla_bloqueados(proceso, rafagaTotal) {
@@ -186,9 +188,6 @@
                 crear_proceso(proceso.nombre, proceso.rafaga);
                 filaActual.remove();
             });
-
-        var contenedor = document.getElementsByClassName('table-container')[0];
-        contenedor.scrollTop = contenedor.scrollHeight;
     }
 
     function inicio() {
@@ -217,7 +216,17 @@
         d3.select('.btn-add').on('click', function() {
             generar_proceso();
         });
+
+        d3.selectAll('.ejecucion').on('click', function() {
+            var tiempo = tiempoActual
+            var idProceso = d3.select(this).attr('class').replace(/proceso-|ejecucion|ejecutandose| /gi, '');
+            console.log(idProceso);
+            var filaActual = d3.select('#proceso-' + idProceso);
+
+            bloquear_proceso(tiempo, idProceso, filaActual);
+        });
     }
+
 
     // Ejecución de funciones
     inicio();

@@ -59,8 +59,6 @@ function pintar_proceso(proceso, length) {
     yAxis.tickSize(d3.select("svg").attr("width"));
     gy.call(yAxis);
 
-    var contenedor = document.getElementsByClassName('chart-container')[0];
-
     bar.append("rect")
 	    .attr("x", proceso.llegada * 31)//x=5-->155
 	    .attr("class", "restante proceso-" + (length - 1))

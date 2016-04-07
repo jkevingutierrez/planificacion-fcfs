@@ -47,6 +47,11 @@
 .ejecutandose,
 .ejecutandose:hover {
     background-color: green;
+    color: white;
+}
+
+rect.ejecutandose:hover {
+    cursor: pointer;
 }
 
 .table-hover>tbody>tr.ejecutandose:hover {
