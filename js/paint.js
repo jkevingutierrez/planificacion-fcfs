@@ -58,14 +58,14 @@ function pintar_proceso(proceso, length){
 	d3.select("svg").attr("width", Number(d3.select("svg").attr("width")) + (31*10));
 	bar.append("rect")
 	    .attr("x", proceso.llegada*31) //x=5-->155
-	    .attr("class", "gris")
+	    .attr("class", "gris proceso-" + (length-1))
 	    .attr("y", -1*(height-(51*length)))
 	    .attr("width", proceso.espera*31)
 	    .attr("height", 51);
 
 	bar.append("rect")
 	    .attr("x", proceso.comienzo*31)//x=5-->155
-	    .attr("class", "azul")
+	    .attr("class", "azul proceso-" + (length-1))
 	    .attr("y", -1*(height-(51*length)))
 	    .attr("width", proceso.rafaga*31)
 	    .attr("height", 51);

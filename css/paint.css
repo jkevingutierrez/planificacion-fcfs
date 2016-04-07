@@ -42,3 +42,7 @@
 	stroke: black;
 	stroke-width:1;
 }
+
+.red {
+    fill: red;
+}
