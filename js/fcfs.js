@@ -120,7 +120,7 @@
 
     function bloquear_proceso(tiempo, idProceso, fila) {
         var proceso = colaListos[idProceso];
-        if (tiempo <= proceso.finalizacion && tiempo >= proceso.comienzo) {
+        if (tiempo < proceso.finalizacion && tiempo >= proceso.comienzo) {
             d3.selectAll('.proceso-' + idProceso)
                 .classed('bloqueado', true);
 
