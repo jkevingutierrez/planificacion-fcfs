@@ -57,6 +57,29 @@ var bar = svg.append("g")
     .attr("class", "bar")
     .attr("transform", "translate(5, " + (height - rect.height) + ")");
 
+function repintar(svgWidth, svgHeight) {
+    if (svgWidth < width) {
+        svgWidth = width;
+    }
+
+    if (svgHeight < height) {
+        svgHeight = height;
+    }
+
+    var domainX = (svgWidth + 200) / proportion
+
+    x.domain([0, domainX])
+        .range([0, svgWidth + 200]);
+
+    xAxis.scale(x)
+        .ticks(domainX / 2);
+
+    yAxis.tickSize(svgWidth + 200);
+
+    gy.call(yAxis);
+    gx.call(xAxis);
+}
+
 function pintar_proceso(proceso, length) {
     var svgHeight = Number(d3.select("svg").attr("height"));
     var svgWidth = Number(d3.select("svg").attr("width"));
@@ -65,22 +88,7 @@ function pintar_proceso(proceso, length) {
 	d3.select("svg").attr("height", svgHeight + rect.height + 6);
 	d3.select("svg").attr("width", svgWidth + (rect.width * proceso.rafaga) + 6);
 
-    if (svgWidth > width) {
-        x.domain([0, (svgWidth + 200) / proportion])
-            .range([0, svgWidth + 200]);
-
-        xAxis.scale(x)
-            .ticks((svgWidth + 200) / proportion / 2)
-
-        gx.call(xAxis);
-
-        yAxis.tickSize(svgWidth + 200);
-        gy.call(yAxis);
-    }
-
-    if (svgHeight > height) {
-
-    }
+    repintar(svgWidth, svgHeight);
 
     bar.append("rect")
 	    .attr("class", "restante proceso-" + (length - 1))
