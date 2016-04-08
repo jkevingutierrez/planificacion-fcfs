@@ -53,7 +53,8 @@ rect.ejecucion {
 }
 
 rect.restante {
-    opacity: .1;
+    opacity: .4;
+    fill: black;
 }
 
 rect.ejecutandose {

@@ -70,14 +70,14 @@
             d3.selectAll('.proceso-' + idProceso)
                 .classed('bloqueado', true);
 
-            d3.selectAll('.ejecucion.proceso-' + idProceso)
+            d3.select('.ejecucion.proceso-' + idProceso)
                 .attr('width', (tiempo - proceso.comienzo) * 31);
 
-            d3.selectAll('.texto-restante.proceso-' + idProceso)
+            d3.select('.texto-restante.proceso-' + idProceso)
                 .attr('x', ((proceso.finalizacion) * 31) - 20)
                 .text(proceso.finalizacion - tiempo);
 
-            d3.selectAll('.texto-rafaga.proceso-' + idProceso)
+            d3.select('.texto-rafaga.proceso-' + idProceso)
                 .text(tiempo - proceso.comienzo);
 
             proceso.nombre = proceso.nombre.replace('(Reanudado)', '');
@@ -204,7 +204,7 @@
                 d3.select('.fila-proceso#proceso-' + indexProceso)
                     .classed('ejecutandose', true);
 
-                d3.selectAll('.ejecucion.proceso-' + indexProceso)
+                d3.select('.ejecucion.proceso-' + indexProceso)
                     .classed('ejecutandose', true);
 
                 procesoActual = indexProceso;

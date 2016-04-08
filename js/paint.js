@@ -38,19 +38,9 @@ var gx = svg.append("g")
     .attr("transform", "translate(5, " + height + ")")
     .call(xAxis);
 
-// ------------
-var values = d3.range(1000)
-    .map(d3.random.bates(10));
-
-var data = d3.layout.histogram()
-    .bins(x.ticks(20))
-    (values);
-
-var bar = svg.selectAll(".bar")
-    .data(data)
-    .enter().append("g")
+var bar = svg.append("g")
     .attr("class", "bar")
-    .attr("transform", function(d) { return "translate(5, " + (y(d.y) - 55.5) + ")"; });
+    .attr("transform", "translate(5, " + (height - 55.5) + ")");
 
 function pintar_proceso(proceso, length) {
 	d3.select("svg").attr("height", Number(d3.select("svg").attr("height")) + 61);+
