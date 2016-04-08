@@ -14,11 +14,10 @@ var rect = {
 };
 
 var xDomain = 50;
-
-var proportion = width / xDomain;
+var proportionX = width / xDomain;
 
 var y = d3.scale.linear()
-    .domain([0, 1])
+    .domain([0, 10])
     .range([height, 0]);
 
 var x = d3.scale.linear()
@@ -67,18 +66,25 @@ function repintar(svgWidth, svgHeight) {
         svgHeight = height;
     }
 
-    var domainX = (svgWidth + 200) / proportion
+    var domainX = (svgWidth + 200) / proportionX
 
     x.domain([0, domainX])
         .range([0, svgWidth + 200]);
 
     xAxis.scale(x)
-        .ticks(domainX / 2);
+        .ticks(domainX / 2)
+        .tickSize(svgHeight);
 
     yAxis.tickSize(svgWidth + 200);
 
+    // y.range([svgHeight, 0]);
+    // yAxis.scale(y)
+    //     .ticks(svgHeight/rect.height);
+
+
     gy.call(yAxis);
-    gx.call(xAxis);
+    gx.attr("transform", "translate(" + margin.left + ", " + svgHeight + ")")
+        .call(xAxis);
 }
 
 function pintar_proceso(proceso, length) {
