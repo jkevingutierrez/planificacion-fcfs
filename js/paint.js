@@ -13,11 +13,11 @@ var rect = {
     height: 50
 };
 
-var xDomain = 50;
-var proportionX = width / xDomain;
+var xDomain = width / rect.width;
+var yDomain = height / rect.height;
 
 var y = d3.scale.linear()
-    .domain([0, 10])
+    .domain([0, yDomain])
     .range([height, 0]);
 
 var x = d3.scale.linear()
@@ -66,7 +66,8 @@ function repintar(svgWidth, svgHeight) {
         svgHeight = height;
     }
 
-    var domainX = (svgWidth + 200) / proportionX
+    var domainX = (svgWidth + 200) / rect.width
+    var domainY = svgHeight / rect.height
 
     x.domain([0, domainX])
         .range([0, svgWidth + 200]);
