@@ -60,10 +60,6 @@ rect.ejecutandose {
     fill: green;
 }
 
-rect.ejecutandose:hover {
-    cursor: pointer;
-}
-
 rect.bloqueado {
     fill: red;
 }

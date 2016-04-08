@@ -9,9 +9,6 @@
     var tiempoLlegada = 0;
     var procesoActual = 0;
 
-    var tiempoEspera = 5001;
-    var procesosIniciales = 5;
-
     // Clases
     function Proceso() {
         this.nombre = 'Proceso';
@@ -23,6 +20,11 @@
         this.espera = 0;
         this.bloquedao = false;
     };
+
+    function Main() {
+        this.tiempoEspera = 5001;
+        this.procesosIniciales = 5;
+    }
 
     // Funciones
     function aggregar_proceso_a_listos(proceso) {
@@ -56,67 +58,9 @@
         proceso.comienzo = proceso.espera + proceso.llegada;
 
         aggregar_proceso_a_listos(proceso);
-        agregar_columna(proceso);
+        actualizar_tabla_listos(proceso);
         pintar_proceso(proceso, colaListos.length);
         return proceso;
-    }
-
-    function crear_primer_proceso() {
-        var nombreInicial = 'Proceso ' + (numeroProcesos++);
-        var rafagaInicial = 8;
-        return crear_proceso(nombreInicial, rafagaInicial);
-    }
-
-    function generar_proceso() {
-        var nombre = 'Proceso ' + (numeroProcesos++);
-        var rafaga = Math.floor((Math.random() * 10) + 1);
-        return crear_proceso(nombre, rafaga);
-    }
-
-    function imprimir_cola_listos() {
-        var colaListosLength = colaListos.length;
-        for (var index = 0; index < colaListosLength; index++) {
-            console.log(colaListos[index]);
-        };
-    }
-
-    function agregar_columna(proceso) {
-        var tabla = d3.select('#tabla_procesos');
-        var tbody = tabla.select('tbody');
-
-        var fila = tbody.append('tr')
-            .attr('class', 'fila-proceso')
-            .attr('id', 'proceso-' + (colaListos.length - 1));
-
-        fila.append('td')
-            .text(proceso.nombre);
-
-        fila.append('td')
-            .text(proceso.llegada);
-
-        fila.append('td')
-            .text(proceso.rafaga);
-
-        fila.append('td')
-            .text(proceso.comienzo);
-
-        fila.append('td')
-            .text(proceso.finalizacion);
-
-        fila.append('td')
-            .text(proceso.retorno);
-
-        fila.append('td')
-            .text(proceso.espera);
-
-        fila.append('td')
-            .html('<button type="button" class="btn btn-danger" title="Bloquear proceso"><span class="glyphicon glyphicon-pause" aria-hidden="true"></span></button>')
-            .on('click', function() {
-                var filaActual = this.parentNode;
-                var idProceso = filaActual.id.replace('proceso-', '');
-
-                bloquear_proceso(idProceso, filaActual)
-            });
     }
 
     function bloquear_proceso(idProceso, fila) {
@@ -159,6 +103,57 @@
         }
     }
 
+    function crear_primer_proceso() {
+        var nombreInicial = 'Proceso ' + (numeroProcesos++);
+        var rafagaInicial = 8;
+        return crear_proceso(nombreInicial, rafagaInicial);
+    }
+
+    function generar_proceso() {
+        var nombre = 'Proceso ' + (numeroProcesos++);
+        var rafaga = Math.floor((Math.random() * 10) + 1);
+        return crear_proceso(nombre, rafaga);
+    }
+
+    function actualizar_tabla_listos(proceso) {
+        var tabla = d3.select('#tabla_procesos');
+        var tbody = tabla.select('tbody');
+
+        var fila = tbody.append('tr')
+            .attr('class', 'fila-proceso')
+            .attr('id', 'proceso-' + (colaListos.length - 1));
+
+        fila.append('td')
+            .text(proceso.nombre);
+
+        fila.append('td')
+            .text(proceso.llegada);
+
+        fila.append('td')
+            .text(proceso.rafaga);
+
+        fila.append('td')
+            .text(proceso.comienzo);
+
+        fila.append('td')
+            .text(proceso.finalizacion);
+
+        fila.append('td')
+            .text(proceso.retorno);
+
+        fila.append('td')
+            .text(proceso.espera);
+
+        fila.append('td')
+            .html('<button type="button" class="btn btn-danger" title="Bloquear proceso"><span class="glyphicon glyphicon-pause" aria-hidden="true"></span></button>')
+            .on('click', function() {
+                var filaActual = this.parentNode;
+                var idProceso = filaActual.id.replace('proceso-', '');
+
+                bloquear_proceso(idProceso, filaActual)
+            });
+    }
+
     function actualizar_tabla_bloqueados(proceso, rafagaTotal) {
         var tabla = d3.select('#tabla_bloqueados');
         var tbody = tabla.select('tbody');
@@ -190,62 +185,59 @@
             });
     }
 
-    function inicio() {
+    function validar_proceso_en_ejecucion() {
+        var tiempo = tiempoActual;
+        var longitudCola = colaListos.length;
+        for (var indexProceso = procesoActual; indexProceso < longitudCola; indexProceso++) {
+            var procesoInterno = colaListos[indexProceso];
+            var textoEnEjecucion = d3.select('#proceso_ejecucion');
+            if (procesoInterno.comienzo <= tiempo && procesoInterno.finalizacion > tiempo) {
+                textoEnEjecucion.text(procesoInterno.nombre);
+
+                if (procesoInterno.bloqueado) {
+                    textoEnEjecucion.text('');
+                }
+
+                d3.selectAll('.ejecutandose')
+                    .classed('ejecutandose', false);
+
+                d3.select('.fila-proceso#proceso-' + indexProceso)
+                    .classed('ejecutandose', true);
+
+                d3.selectAll('.ejecucion.proceso-' + indexProceso)
+                    .classed('ejecutandose', true);
+
+                procesoActual = indexProceso;
+            }
+        }
+    }
+
+    Main.prototype.ejecutar = function() {
         crear_primer_proceso();
 
-        for (var index = 0; index < procesosIniciales; index++) {
+        for (var index = 0; index < this.procesosIniciales; index++) {
             generar_proceso();
         };
 
         window.setInterval(function () {
             generar_proceso();
-        }, tiempoEspera);
+        }, this.tiempoEspera);
 
         window.setInterval(function () {
             d3.select('#tiempo_actual')
                 .text(++tiempoActual);
 
-            var longitudCola = colaListos.length;
-            for (var indexProceso = procesoActual; indexProceso < longitudCola; indexProceso++) {
-                var procesoInterno = colaListos[indexProceso];
-                var textoEnEjecucion = d3.select('#proceso_ejecucion');
-                if (procesoInterno.comienzo <= tiempoActual && procesoInterno.finalizacion > tiempoActual) {
-                    textoEnEjecucion.text(procesoInterno.nombre);
+            validar_proceso_en_ejecucion();
 
-                    if (procesoInterno.bloqueado) {
-                        textoEnEjecucion.text('');
-                    }
-
-                    d3.selectAll('.ejecutandose')
-                        .classed('ejecutandose', false);
-
-                    d3.select('.fila-proceso#proceso-' + indexProceso)
-                        .classed('ejecutandose', true);
-
-                    d3.selectAll('.ejecucion.proceso-' + indexProceso)
-                        .classed('ejecutandose', true);
-
-                    procesoActual = indexProceso;
-                }
-            }
         }, 1000);
 
         d3.select('.btn-add').on('click', function() {
             generar_proceso();
         });
-
-        d3.selectAll('.ejecucion').on('click', function() {
-            var idProceso = d3.select(this)
-                .attr('class')
-                .replace(/proceso-|ejecucion|ejecutandose| /gi, '');
-
-            var fila = d3.select('#proceso-' + idProceso);
-
-            bloquear_proceso(idProceso, fila);
-        });
     }
 
     // Ejecución de funciones
-    inicio();
+    var main = new Main();
+    main.ejecutar();
 
 })();

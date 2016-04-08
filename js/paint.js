@@ -78,7 +78,7 @@ function pintar_proceso(proceso, length) {
 	    .attr("x", proceso.comienzo * 31)//x=5-->155
 	    .attr("y", -(height - ( 55.5 * length)))
 	    .attr("width", proceso.rafaga * 31)
-	    .attr("height", 55.5);
+	    .attr("height", 55.5)
 
     bar.append("text")
         .attr("class", 'texto-nombre proceso-' + (length - 1))
