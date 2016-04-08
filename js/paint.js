@@ -35,6 +35,7 @@ var yAxis = d3.svg.axis()
     .scale(y)
     .tickSize(width)
     .orient("right")
+    .ticks(10)
     .tickFormat("");
 
 var svg = d3.select("svg")
