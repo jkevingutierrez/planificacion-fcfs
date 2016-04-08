@@ -1,3 +1,7 @@
+svg {
+    min-width: 960px;
+}
+
 .axis path,
 .axis line {
   fill: none;

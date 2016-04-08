@@ -18,7 +18,7 @@
         this.finalizacion = 0;
         this.retorno = 0;
         this.espera = 0;
-        this.bloquedao = false;
+        this.bloqueado = false;
     };
 
     function Main() {
@@ -60,7 +60,6 @@
         aggregar_proceso_a_listos(proceso);
         actualizar_tabla_listos(proceso);
         pintar_proceso(proceso, colaListos.length);
-        return proceso;
     }
 
     function bloquear_proceso(idProceso, fila) {
@@ -106,13 +105,13 @@
     function crear_primer_proceso() {
         var nombreInicial = 'Proceso ' + (numeroProcesos++);
         var rafagaInicial = 8;
-        return crear_proceso(nombreInicial, rafagaInicial);
+        crear_proceso(nombreInicial, rafagaInicial);
     }
 
     function generar_proceso() {
         var nombre = 'Proceso ' + (numeroProcesos++);
         var rafaga = Math.floor((Math.random() * 10) + 1);
-        return crear_proceso(nombre, rafaga);
+        crear_proceso(nombre, rafaga);
     }
 
     function actualizar_tabla_listos(proceso) {
@@ -192,10 +191,11 @@
             var procesoInterno = colaListos[indexProceso];
             var textoEnEjecucion = d3.select('#proceso_ejecucion');
             if (procesoInterno.comienzo <= tiempo && procesoInterno.finalizacion > tiempo) {
-                textoEnEjecucion.text(procesoInterno.nombre);
 
                 if (procesoInterno.bloqueado) {
                     textoEnEjecucion.text('');
+                } else {
+                    textoEnEjecucion.text(procesoInterno.nombre);
                 }
 
                 d3.selectAll('.ejecutandose')
