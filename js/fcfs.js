@@ -202,12 +202,13 @@
         }, tiempoEspera);
 
         window.setInterval(function () {
-            d3.select('.time')
+            d3.select('#tiempo_actual')
                 .text(++tiempoActual);
+
             var longitudCola = colaListos.length;
             for (var indexProceso = procesoActual; indexProceso < longitudCola; indexProceso++) {
                 var procesoInterno = colaListos[indexProceso];
-                var textoEnEjecucion = d3.select('.proceso-ejecucion');
+                var textoEnEjecucion = d3.select('#proceso_ejecucion');
                 if (procesoInterno.comienzo <= tiempoActual && procesoInterno.finalizacion > tiempoActual) {
                     textoEnEjecucion.text(procesoInterno.nombre);
 
