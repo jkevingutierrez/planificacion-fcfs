@@ -42,28 +42,28 @@
   shape-rendering: crispEdges;
 }
 
-.espera {
+rect.espera {
 	fill: #BCBCBC;
 	stroke: black;
 }
 
-.ejecucion {
+rect.ejecucion {
 	fill: steelblue;
 	stroke: black;
 }
 
-.restante {
+rect.restante {
     opacity: .1;
 }
 
-.ejecutandose {
+rect.ejecutandose {
     fill: green;
 }
 
-.bloqueado {
-    fill: red;
+rect.ejecutandose:hover {
+    cursor: pointer;
 }
 
-.texto-restante {
-    fill: black;
+rect.bloqueado {
+    fill: red;
 }

@@ -60,36 +60,39 @@ function pintar_proceso(proceso, length) {
     gy.call(yAxis);
 
     bar.append("rect")
-	    .attr("x", proceso.llegada * 31)//x=5-->155
 	    .attr("class", "restante proceso-" + (length - 1))
+	    .attr("x", proceso.llegada * 31)//x=5-->155
 	    .attr("y", -(height - ( 55.5 * length)))
 	    .attr("width", proceso.retorno * 31)
 	    .attr("height", 55.5);
 
 	bar.append("rect")
-	    .attr("x", proceso.llegada * 31) //x=5-->155
 	    .attr("class", "espera proceso-" + (length - 1))
+	    .attr("x", proceso.llegada * 31) //x=5-->155
 	    .attr("y", -(height - (55.5 * length)))
 	    .attr("width", proceso.espera * 31)
 	    .attr("height", 55.5);
 
 	bar.append("rect")
-	    .attr("x", proceso.comienzo * 31)//x=5-->155
 	    .attr("class", "ejecucion proceso-" + (length - 1))
+	    .attr("x", proceso.comienzo * 31)//x=5-->155
 	    .attr("y", -(height - ( 55.5 * length)))
 	    .attr("width", proceso.rafaga * 31)
 	    .attr("height", 55.5);
 
     bar.append("text")
+        .attr("class", 'texto-nombre proceso-' + (length - 1))
 	    .attr("x", (proceso.llegada * 31) + 40)
 	    .attr("y", -(height - (55.5 * length)) + 30)
 	    .text(proceso.nombre);
 
+    var textoEspera = bar.append("text")
+        .attr("class", 'texto-espera proceso-' + (length - 1))
+        .attr("x", (proceso.llegada * 31) + 5)
+        .attr("y", -(height - (55.5 * length)) + 30);
+
     if (proceso.espera > 0) {
-        bar.append("text")
-	    .attr("x", (proceso.llegada * 31) + 5)
-	    .attr("y", -(height - (55.5 * length)) + 30)
-	    .text(proceso.espera);
+        textoEspera.text(proceso.espera);
     }
 
     bar.append("text")
@@ -99,6 +102,6 @@ function pintar_proceso(proceso, length) {
 	    .text(proceso.rafaga);
 
     bar.append("text")
-	    .attr("y", -(height - (55.5 * length)) + 30)
 	    .attr("class", 'texto-restante proceso-' + (length - 1))
+	    .attr("y", -(height - (55.5 * length)) + 30);
 }
