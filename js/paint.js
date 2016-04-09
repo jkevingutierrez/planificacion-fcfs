@@ -1,7 +1,7 @@
 "use strict";
 
 var width = 960,
-    height = 500;
+    height = 10000;
 
 var margin = {
     top: 25,
@@ -34,7 +34,7 @@ var yAxis = d3.svg.axis()
     .scale(y)
     .tickSize(width)
     .orient("right")
-    .ticks(10)
+    .ticks(yDomain)
     .tickFormat("");
 
 var svg = d3.select("svg")
@@ -57,7 +57,7 @@ var bar = svg.append("g")
     .attr("class", "bar")
     .attr("transform", "translate(5, " + (height - rect.height) + ")");
 
-function repintar(svgWidth, svgHeight) {
+function repintar_cuadricula(svgWidth, svgHeight) {
     if (svgWidth < width) {
         svgWidth = width;
     }
@@ -76,16 +76,17 @@ function repintar(svgWidth, svgHeight) {
         .ticks(domainX / 2)
         .tickSize(svgHeight);
 
-    yAxis.tickSize(svgWidth + 200);
+    y.domain([0, domainY])
+        .range([svgHeight, 0]);
 
-    // y.range([svgHeight, 0]);
-    // yAxis.scale(y)
-    //     .ticks(svgHeight/rect.height);
-
+    yAxis.tickSize(svgWidth + 200)
+        .scale(y)
+        .ticks(domainY);
 
     gy.call(yAxis);
     gx.attr("transform", "translate(" + margin.left + ", " + svgHeight + ")")
         .call(xAxis);
+
 }
 
 function pintar_proceso(proceso, length) {
@@ -96,7 +97,7 @@ function pintar_proceso(proceso, length) {
 	d3.select("svg").attr("height", svgHeight + rect.height + 6);
 	d3.select("svg").attr("width", svgWidth + (rect.width * proceso.rafaga) + 6);
 
-    repintar(svgWidth, svgHeight);
+    repintar_cuadricula(svgWidth, svgHeight);
 
     bar.append("rect")
 	    .attr("class", "restante proceso-" + (length - 1))
