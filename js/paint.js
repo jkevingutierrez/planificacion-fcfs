@@ -67,7 +67,6 @@ function repintar_cuadricula(svgWidth, svgHeight) {
     }
 
     xDomain = (svgWidth + 200) / rect.width
-    yDomain = svgHeight / rect.height
 
     x.domain([0, xDomain])
         .range([0, svgWidth + 200]);
@@ -76,12 +75,16 @@ function repintar_cuadricula(svgWidth, svgHeight) {
         .ticks(xDomain / 2)
         .tickSize(svgHeight);
 
-    y.domain([0, yDomain])
-        .range([svgHeight, 0]);
+    yAxis.tickSize(svgWidth + 200);
 
-    yAxis.tickSize(svgWidth + 200)
-        .scale(y)
-        .ticks(yDomain);
+    // yDomain = svgHeight / rect.height
+
+    // y.domain([0, yDomain])
+    //    .range([svgHeight, 0]);
+
+    // yAxis.tickSize(svgWidth + 200);
+    //    .scale(y)
+    //    .ticks(yDomain);
 
     gy.call(yAxis);
     gx.attr("transform", "translate(" + margin.left + ", " + svgHeight + ")")
