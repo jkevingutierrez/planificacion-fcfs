@@ -12,23 +12,19 @@
 .x.axis path {
     display: none;
     stroke: #777;
-    stroke-dasharray: 2, 2;
 }
 
 .x.axis line {
     stroke: #777;
-    stroke-dasharray: 2, 2;
 }
 
 .y.axis path {
     display: none;
     stroke: #777;
-    stroke-dasharray: 2, 2;
 }
 
 .y.axis line {
     stroke: #777;
-    stroke-dasharray: 2, 2;
 }
 
 .bar rect {
@@ -47,25 +43,25 @@
     shape-rendering: crispEdges;
 }
 
-rect.espera {
+.bar rect.espera {
     fill: #BCBCBC;
     stroke: black;
 }
 
-rect.ejecucion {
+.bar rect.ejecucion {
     fill: steelblue;
     stroke: black;
 }
 
-rect.restante {
+.bar rect.restante {
     opacity: .4;
     fill: black;
 }
 
-rect.ejecutandose {
+.bar rect.ejecutandose {
     fill: green;
 }
 
-rect.bloqueado {
+.bar rect.bloqueado {
     fill: red;
 }
