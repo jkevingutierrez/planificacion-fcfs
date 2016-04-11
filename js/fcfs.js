@@ -19,7 +19,7 @@
         this.retorno = 0;
         this.espera = 0;
         this.bloqueado = false;
-    };
+    }
 
     function Main() {
         this.tiempoEspera = 5001;
@@ -51,7 +51,7 @@
 
         for (var index = 0; index < colaListosLength; index++) {
             proceso.finalizacion += colaListos[index].rafaga;
-        };
+        }
 
         proceso.retorno = proceso.finalizacion - proceso.llegada;
         proceso.espera = proceso.retorno - proceso.rafaga;
@@ -59,7 +59,7 @@
 
         aggregar_proceso_a_listos(proceso);
         actualizar_tabla_listos(proceso);
-        pintar_proceso(proceso, colaListos.length);
+        window.pintar_proceso(proceso, colaListos.length);
     }
 
     function bloquear_proceso(idProceso, fila) {
@@ -70,10 +70,10 @@
                 .classed('bloqueado', true);
 
             d3.select('.ejecucion.proceso-' + idProceso)
-                .attr('width', (tiempo - proceso.comienzo) * 31);
+                .attr('width', (tiempo - proceso.comienzo) * 18);
 
             d3.select('.texto-restante.proceso-' + idProceso)
-                .attr('x', ((proceso.finalizacion) * 31) - 20)
+                .attr('x', ((proceso.finalizacion) * 18) - 20)
                 .text(proceso.finalizacion - tiempo);
 
             d3.select('.texto-rafaga.proceso-' + idProceso)
@@ -149,7 +149,7 @@
                 var filaActual = this.parentNode;
                 var idProceso = filaActual.id.replace('proceso-', '');
 
-                bloquear_proceso(idProceso, filaActual)
+                bloquear_proceso(idProceso, filaActual);
             });
     }
 
@@ -217,13 +217,13 @@
 
         for (var index = 0; index < this.procesosIniciales; index++) {
             generar_proceso();
-        };
+        }
 
-        window.setInterval(function () {
+        window.setInterval(function() {
             generar_proceso();
         }, this.tiempoEspera);
 
-        window.setInterval(function () {
+        window.setInterval(function() {
             d3.select('#tiempo_actual')
                 .text(++tiempoActual);
 
@@ -234,7 +234,7 @@
         d3.select('.btn-add').on('click', function() {
             generar_proceso();
         });
-    }
+    };
 
     // Ejecución de funciones
     var main = new Main();

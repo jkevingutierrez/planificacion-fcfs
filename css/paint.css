@@ -1,59 +1,60 @@
-svg {
+.svg {
     min-width: 960px;
 }
 
 .axis path,
 .axis line {
-  fill: none;
-  stroke: #000;
-  shape-rendering: crispEdges;
+    fill: none;
+    stroke: #000;
+    shape-rendering: crispEdges;
 }
 
 .x.axis path {
-  display: none;
-  stroke: #777;
-  stroke-dasharray: 2,2;
+    display: none;
+    stroke: #777;
+    stroke-dasharray: 2, 2;
 }
 
 .x.axis line {
-  stroke: #777;
-  stroke-dasharray: 2,2;
+    stroke: #777;
+    stroke-dasharray: 2, 2;
 }
 
 .y.axis path {
-  display: none;
-  stroke: #777;
-  stroke-dasharray: 2,2;
+    display: none;
+    stroke: #777;
+    stroke-dasharray: 2, 2;
 }
 
 .y.axis line {
-  stroke: #777;
-  stroke-dasharray: 2,2;
+    stroke: #777;
+    stroke-dasharray: 2, 2;
 }
 
 .bar rect {
-  shape-rendering: crispEdges;
+    shape-rendering: crispEdges;
 }
 
 .bar text {
-  fill: #fff;
-  stroke: none;
+    fill: #fff;
+    stroke: none;
 }
 
-.axis path, .axis line {
-  fill: none;
-  stroke: #000;
-  shape-rendering: crispEdges;
+.axis path,
+.axis line {
+    fill: none;
+    stroke: #000;
+    shape-rendering: crispEdges;
 }
 
 rect.espera {
-	fill: #BCBCBC;
-	stroke: black;
+    fill: #BCBCBC;
+    stroke: black;
 }
 
 rect.ejecucion {
-	fill: steelblue;
-	stroke: black;
+    fill: steelblue;
+    stroke: black;
 }
 
 rect.restante {
