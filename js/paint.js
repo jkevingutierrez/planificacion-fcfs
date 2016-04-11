@@ -93,7 +93,7 @@
 
     }
 
-     window.pintar_proceso = function(proceso, length) {
+    window.pintar_proceso = function(proceso, length) {
         var svgHeight = Number(d3.select("svg").attr("height"));
         var svgWidth = Number(d3.select("svg").attr("width"));
         var rectY = -(height - (rect.height * length));
