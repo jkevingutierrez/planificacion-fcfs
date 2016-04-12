@@ -126,7 +126,7 @@
 
         bar.append("text")
             .attr("class", 'texto-nombre proceso-' + (length - 1))
-            .attr("x", (proceso.llegada * rect.width) + 40)
+            .attr("x", (proceso.llegada * rect.width) + 30)
             .attr("y", rectY + margin.top)
             .text(proceso.nombre);
 

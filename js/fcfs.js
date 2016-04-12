@@ -8,6 +8,11 @@
     var tiempoActual = 0;
     var tiempoLlegada = 0;
     var procesoActual = 0;
+    
+    var rect = {
+        width: 18,
+        height: 40
+    };
 
     // Clases
     function Proceso() {
@@ -58,7 +63,7 @@
         proceso.comienzo = proceso.espera + proceso.llegada;
 
         aggregar_proceso_a_listos(proceso);
-        actualizar_tabla_listos(proceso);
+        agregar_columna_tabla_listos(proceso);
         window.pintar_proceso(proceso, colaListos.length);
     }
 
@@ -70,10 +75,10 @@
                 .classed('bloqueado', true);
 
             d3.select('.ejecucion.proceso-' + idProceso)
-                .attr('width', (tiempo - proceso.comienzo) * 18);
+                .attr('width', (tiempo - proceso.comienzo) * rect.width);
 
             d3.select('.texto-restante.proceso-' + idProceso)
-                .attr('x', ((proceso.finalizacion) * 18) - 20)
+                .attr('x', ((proceso.finalizacion) * rect.width) - 20)
                 .text(proceso.finalizacion - tiempo);
 
             d3.select('.texto-rafaga.proceso-' + idProceso)
@@ -85,12 +90,15 @@
             proceso.rafaga = proceso.finalizacion - tiempo;
             proceso.bloqueado = tiempo;
             aggregar_proceso_a_bloqueados(proceso);
-            actualizar_tabla_bloqueados(proceso, rafagaTotal);
+            agregar_columna_tabla_bloqueados(proceso, rafagaTotal);
 
             var contenedor = document.getElementsByClassName('table-container')[1];
             contenedor.scrollTop = contenedor.scrollHeight;
 
             fila.remove();
+               
+            colaListos[idProceso].rafaga = tiempo - proceso.comienzo;
+            actualizar_procesos(idProceso);
 
         } else {
             swal({
@@ -101,7 +109,72 @@
             });
         }
     }
+    
+    function actualizar_procesos(idProceso) {
+        for (var i = (Number(idProceso) + 1); i < colaListos.length; i++) {
+            colaListos[i].finalizacion = colaListos[i].rafaga;
 
+            for (var j = 0; j < i; j++) {
+                colaListos[i].finalizacion += colaListos[j].rafaga;
+            }
+
+            colaListos[i].retorno = colaListos[i].finalizacion - colaListos[i].llegada;
+            colaListos[i].espera = colaListos[i].retorno - colaListos[i].rafaga;
+            colaListos[i].comienzo = colaListos[i].espera + colaListos[i].llegada;
+            
+            actualizar_columna_tabla_listos(i, colaListos[i]);
+            actualizar_gantt(i, colaListos[i]);
+        }
+    }
+    
+    function actualizar_columna_tabla_listos(id, proceso) {
+        var tr = d3.select('#proceso-' + (id)).selectAll('td');
+        var columnaComienzo = tr[0][3];
+        var columnaFinalizacion = tr[0][4];
+        var columnaRetorno = tr[0][5];
+        var columnaEspera = tr[0][6];
+        
+        d3.select(columnaComienzo)
+            .text(proceso.comienzo);
+            
+        d3.select(columnaFinalizacion)
+            .text(proceso.finalizacion);
+            
+        d3.select(columnaRetorno)
+            .text(proceso.retorno);
+        
+        d3.select(columnaEspera)
+            .text(proceso.espera);
+    }
+    
+    function actualizar_gantt(id, proceso) {
+        d3.select('.ejecucion.proceso-' + id)
+            .attr('x', proceso.comienzo * rect.width)
+            .attr("width", proceso.rafaga * rect.width);
+            
+        if (proceso.espera > 0) {
+            d3.select('.espera.proceso-' + id)
+                .attr("x", proceso.llegada * rect.width)
+                .attr('width', proceso.espera * rect.width);
+            
+            d3.select('.texto-espera.proceso-' + id)
+                .attr("x", (proceso.llegada * rect.width) + 5)
+                .text(proceso.espera);
+        } else {
+            d3.select('.espera.proceso-' + id)
+                .attr("x", proceso.llegada * rect.width)
+                .attr('width', 0);
+            
+            d3.select('.texto-espera.proceso-' + id)
+                .attr("x", (proceso.llegada * rect.width) + 5)
+                .text('');
+        }
+
+        d3.select('.texto-rafaga.proceso-' + id)
+            .attr("x", (proceso.comienzo * rect.width) + 5)
+            .text(proceso.rafaga);
+    }
+    
     function crear_primer_proceso() {
         var nombreInicial = 'Proceso ' + (numeroProcesos++);
         var rafagaInicial = 8;
@@ -114,7 +187,7 @@
         crear_proceso(nombre, rafaga);
     }
 
-    function actualizar_tabla_listos(proceso) {
+    function agregar_columna_tabla_listos(proceso) {
         var tabla = d3.select('#tabla_procesos');
         var tbody = tabla.select('tbody');
 
@@ -153,7 +226,7 @@
             });
     }
 
-    function actualizar_tabla_bloqueados(proceso, rafagaTotal) {
+    function agregar_columna_tabla_bloqueados(proceso, rafagaTotal) {
         var tabla = d3.select('#tabla_bloqueados');
         var tbody = tabla.select('tbody');
 
