@@ -8,7 +8,7 @@
     var tiempoActual = 0;
     var tiempoLlegada = 0;
     var procesoActual = 0;
-    
+
     var rect = {
         width: 18,
         height: 40
@@ -96,7 +96,7 @@
             contenedor.scrollTop = contenedor.scrollHeight;
 
             fila.remove();
-               
+
             colaListos[idProceso].rafaga = tiempo - proceso.comienzo;
             actualizar_procesos(idProceso);
 
@@ -109,7 +109,13 @@
             });
         }
     }
-    
+
+    function ordenar_lista() {
+        return colaListos.sort(function(a, b) {
+            return a.rafaga - b.rafaga;
+        });
+    }
+
     function actualizar_procesos(idProceso) {
         for (var i = (Number(idProceso) + 1); i < colaListos.length; i++) {
             colaListos[i].finalizacion = colaListos[i].rafaga;
@@ -121,42 +127,42 @@
             colaListos[i].retorno = colaListos[i].finalizacion - colaListos[i].llegada;
             colaListos[i].espera = colaListos[i].retorno - colaListos[i].rafaga;
             colaListos[i].comienzo = colaListos[i].espera + colaListos[i].llegada;
-            
+
             actualizar_columna_tabla_listos(i, colaListos[i]);
             actualizar_gantt(i, colaListos[i]);
         }
     }
-    
+
     function actualizar_columna_tabla_listos(id, proceso) {
         var tr = d3.select('#proceso-' + (id)).selectAll('td');
         var columnaComienzo = tr[0][3];
         var columnaFinalizacion = tr[0][4];
         var columnaRetorno = tr[0][5];
         var columnaEspera = tr[0][6];
-        
+
         d3.select(columnaComienzo)
             .text(proceso.comienzo);
-            
+
         d3.select(columnaFinalizacion)
             .text(proceso.finalizacion);
-            
+
         d3.select(columnaRetorno)
             .text(proceso.retorno);
-        
+
         d3.select(columnaEspera)
             .text(proceso.espera);
     }
-    
+
     function actualizar_gantt(id, proceso) {
         d3.select('.ejecucion.proceso-' + id)
             .attr('x', proceso.comienzo * rect.width)
             .attr("width", proceso.rafaga * rect.width);
-            
+
         if (proceso.espera > 0) {
             d3.select('.espera.proceso-' + id)
                 .attr("x", proceso.llegada * rect.width)
                 .attr('width', proceso.espera * rect.width);
-            
+
             d3.select('.texto-espera.proceso-' + id)
                 .attr("x", (proceso.llegada * rect.width) + 5)
                 .text(proceso.espera);
@@ -164,7 +170,7 @@
             d3.select('.espera.proceso-' + id)
                 .attr("x", proceso.llegada * rect.width)
                 .attr('width', 0);
-            
+
             d3.select('.texto-espera.proceso-' + id)
                 .attr("x", (proceso.llegada * rect.width) + 5)
                 .text('');
@@ -174,7 +180,7 @@
             .attr("x", (proceso.comienzo * rect.width) + 5)
             .text(proceso.rafaga);
     }
-    
+
     function crear_primer_proceso() {
         var nombreInicial = 'Proceso ' + (numeroProcesos++);
         var rafagaInicial = 8;
@@ -187,13 +193,17 @@
         crear_proceso(nombre, rafaga);
     }
 
-    function agregar_columna_tabla_listos(proceso) {
+    function agregar_columna_tabla_listos(proceso, length) {
+        if (!length) {
+            length =  colaListos.length - 1;
+        }
+
         var tabla = d3.select('#tabla_procesos');
         var tbody = tabla.select('tbody');
 
         var fila = tbody.append('tr')
             .attr('class', 'fila-proceso')
-            .attr('id', 'proceso-' + (colaListos.length - 1));
+            .attr('id', 'proceso-' + length);
 
         fila.append('td')
             .text(proceso.nombre);
@@ -262,8 +272,8 @@
         var longitudCola = colaListos.length;
         for (var indexProceso = procesoActual; indexProceso < longitudCola; indexProceso++) {
             var procesoInterno = colaListos[indexProceso];
-            var textoEnEjecucion = d3.select('#proceso_ejecucion');
             if (procesoInterno.comienzo <= tiempo && procesoInterno.finalizacion > tiempo) {
+                var textoEnEjecucion = d3.select('#proceso_ejecucion');
 
                 if (procesoInterno.bloqueado) {
                     textoEnEjecucion.text('');
