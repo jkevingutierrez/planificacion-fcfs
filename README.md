@@ -1,3 +1,4 @@
-# Primero en llegar, primero en ser atendido
+# Algoritmos de planificación de procesos
 
-Algoritmo de planificación de procesos First-Come, First-Served
+* Primero en llegar, primero en ser atendido
+* El trabajo más corto primero
