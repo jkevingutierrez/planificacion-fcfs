@@ -1,7 +1,13 @@
+main {
+    min-height: calc(100vh - 306px);
+}
+
 .container .jumbotron {
     padding: 30px 15px;
     position: relative;
 }
+
+.chart-container
 
 .table>tbody>tr>td {
     max-width: 90px;
@@ -51,6 +57,7 @@
 .footer {
     background-color: black;
     color: #eee;
+    padding: 20px 0;
     text-align: center;
 }
 
