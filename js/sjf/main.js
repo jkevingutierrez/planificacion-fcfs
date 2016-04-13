@@ -195,7 +195,7 @@
 
     function agregar_columna_tabla_listos(proceso, length) {
         if (!length) {
-            length =  colaListos.length - 1;
+            length = colaListos.length - 1;
         }
 
         var tabla = d3.select('#tabla_procesos');
