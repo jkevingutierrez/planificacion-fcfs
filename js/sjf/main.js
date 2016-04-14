@@ -111,9 +111,46 @@
     }
 
     function ordenar_lista() {
-        return colaListos.sort(function(a, b) {
-            return a.rafaga - b.rafaga;
+        var colaListosEjecutados = colaListos.filter(function(proceso) {
+          return tiempoActual >= proceso.comienzo;
         });
+
+        var colaListosSinEjecutar = colaListos.filter(function(proceso) {
+          return tiempoActual < proceso.comienzo;
+        });
+
+        colaListos = colaListosEjecutados.concat(colaListosSinEjecutar.sort(function(a, b) {
+            return a.rafaga - b.rafaga;
+        }));
+    }
+
+    function repintar_procesos() {
+
+      ordenar_lista();
+
+      var tabla = d3.select('#tabla_procesos');
+      var tbody = tabla.select('tbody').html('');
+
+      var bar = d3.select('.bar').html('');
+
+      var colaListosLength = colaListos.length;
+
+      for (var i = 0; i < colaListosLength; i++) {
+         var proceso = colaListos [i];
+
+         proceso.finalizacion = proceso.rafaga;
+
+        for (var j = 0; j < i; j++) {
+            proceso.finalizacion += colaListos[j].rafaga;
+        }
+
+        proceso.retorno = proceso.finalizacion - proceso.llegada;
+        proceso.espera = proceso.retorno - proceso.rafaga;
+        proceso.comienzo = proceso.espera + proceso.llegada;
+
+        agregar_columna_tabla_listos(proceso, i);
+        window.pintar_proceso(proceso, i + 1);
+      }
     }
 
     function actualizar_procesos(idProceso) {
@@ -191,10 +228,12 @@
         var nombre = 'Proceso ' + (numeroProcesos++);
         var rafaga = Math.floor((Math.random() * 10) + 1);
         crear_proceso(nombre, rafaga);
+
+        repintar_procesos();
     }
 
     function agregar_columna_tabla_listos(proceso, length) {
-        if (!length) {
+        if (length !== 0 && !length) {
             length = colaListos.length - 1;
         }
 
