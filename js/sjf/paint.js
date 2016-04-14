@@ -103,11 +103,15 @@
 
         repintar_cuadricula(svgWidth, svgHeight);
 
+        if (proceso.espera < 0) {
+          proceso.espera = 0;
+        }
+
         bar.append("rect")
             .attr("class", "restante proceso-" + (length - 1))
             .attr("x", proceso.llegada * rect.width)
             .attr("y", rectY)
-            .attr("width", proceso.retorno * rect.width)
+            .attr("width", proceso.finalizacion * rect.width)
             .attr("height", rect.height);
 
         bar.append("rect")
