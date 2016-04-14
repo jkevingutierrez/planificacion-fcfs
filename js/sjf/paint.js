@@ -107,28 +107,28 @@
           proceso.espera = 0;
         }
 
-        bar.append("rect")
+        var rectRestante = bar.append("rect")
             .attr("class", "restante proceso-" + (length - 1))
             .attr("x", proceso.llegada * rect.width)
             .attr("y", rectY)
             .attr("width", proceso.finalizacion * rect.width)
             .attr("height", rect.height);
 
-        bar.append("rect")
+        var rectEspera = bar.append("rect")
             .attr("class", "espera proceso-" + (length - 1))
             .attr("x", proceso.llegada * rect.width)
             .attr("y", rectY)
             .attr("width", proceso.espera * rect.width)
             .attr("height", rect.height);
 
-        bar.append("rect")
+        var rectEjecucion = bar.append("rect")
             .attr("class", "ejecucion proceso-" + (length - 1))
             .attr("x", proceso.comienzo * rect.width)
             .attr("y", rectY)
             .attr("width", proceso.rafaga * rect.width)
             .attr("height", rect.height);
 
-        bar.append("text")
+        var textoNombre = bar.append("text")
             .attr("class", 'texto-nombre proceso-' + (length - 1))
             .attr("x", (proceso.llegada * rect.width) + 30)
             .attr("y", rectY + margin.top)
@@ -143,14 +143,29 @@
             textoEspera.text(proceso.espera);
         }
 
-        bar.append("text")
+        var textoRafaga = bar.append("text")
             .attr("class", 'texto-rafaga proceso-' + (length - 1))
             .attr("x", (proceso.comienzo * rect.width) + 5)
             .attr("y", rectY + margin.top)
             .text(proceso.rafaga);
 
-        bar.append("text")
+        var textoRestante = bar.append("text")
             .attr("class", 'texto-restante proceso-' + (length - 1))
             .attr("y", rectY + margin.top);
+
+        if (proceso.bloqueado) {
+          rectRestante.classed('bloqueado', true);
+          rectEspera.classed('bloqueado', true);
+          rectEjecucion.classed('bloqueado', true);
+
+          rectRestante.attr('width', proceso.finalizacionTotal * rect.width);
+
+          rectEjecucion.attr('width', (proceso.bloqueado - proceso.comienzo) * rect.width);
+
+          textoRafaga.text(proceso.bloqueado - proceso.comienzo);
+          textoRestante.attr('x', ((proceso.finalizacionTotal) * rect.width) - 20)
+                .text(proceso.finalizacionTotal - proceso.bloqueado);
+
+        }
     };
 })();

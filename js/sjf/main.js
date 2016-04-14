@@ -88,7 +88,10 @@
 
             var rafagaTotal = proceso.rafaga;
             proceso.rafaga = proceso.finalizacion - tiempo;
+
             proceso.bloqueado = tiempo;
+            proceso.rafagaFaltante = proceso.finalizacion - tiempo;
+            proceso.finalizacionTotal = proceso.finalizacion;
             aggregar_proceso_a_bloqueados(proceso);
             agregar_columna_tabla_bloqueados(proceso, rafagaTotal);
 
@@ -111,15 +114,19 @@
     }
 
     function ordenar_lista() {
+        var colaBloqueados = colaListos.filter(function(proceso) {
+            return proceso.bloqueado;
+        });
+
         var colaListosEjecutados = colaListos.filter(function(proceso) {
-            return tiempoActual >= proceso.comienzo;
+            return tiempoActual >= proceso.comienzo && !proceso.bloqueado;
         });
 
         var colaListosSinEjecutar = colaListos.filter(function(proceso) {
-            return tiempoActual < proceso.comienzo;
+            return tiempoActual < proceso.comienzo && !proceso.bloqueado;
         });
 
-        colaListos = colaListosEjecutados.concat(colaListosSinEjecutar.sort(function(a, b) {
+        colaListos = colaBloqueados.concat(colaListosEjecutados).concat(colaListosSinEjecutar.sort(function(a, b) {
             return a.rafaga - b.rafaga;
         }));
     }
@@ -148,7 +155,10 @@
             proceso.espera = proceso.retorno - proceso.rafaga;
             proceso.comienzo = proceso.espera + proceso.llegada;
 
-            agregar_columna_tabla_listos(proceso, i);
+            if (!proceso.bloqueado) {
+              agregar_columna_tabla_listos(proceso, i);
+            }
+
             window.pintar_proceso(proceso, i + 1);
         }
     }
@@ -301,7 +311,11 @@
 
                 proceso.nombre = proceso.nombre + ' (Reanudado)';
 
+                proceso.rafaga = proceso.rafagaFaltante;
+                console.log(proceso.rafaga);
+
                 crear_proceso(proceso.nombre, proceso.rafaga);
+                repintar_procesos();
                 filaActual.remove();
             });
     }
