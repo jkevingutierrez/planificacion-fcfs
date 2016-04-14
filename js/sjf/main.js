@@ -8,7 +8,6 @@
     var tiempoActual = 0;
     var tiempoLlegada = 0;
     var procesoActual = 0;
-    var tiempo_restante = 0;
 
     var rect = {
         width: 18,

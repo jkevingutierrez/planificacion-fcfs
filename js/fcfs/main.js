@@ -282,6 +282,7 @@
                     .classed('ejecutandose', true);
 
                 procesoActual = indexProceso;
+                d3.select('#tiempo_restante').text(colaListos[procesoActual].finalizacion - tiempoActual);
             }
         }
     }
