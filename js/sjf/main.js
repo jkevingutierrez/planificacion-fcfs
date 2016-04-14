@@ -52,11 +52,8 @@
         proceso.nombre = nombre;
         proceso.rafaga = rafaga;
         proceso.llegada = tiempoLlegada++;
-        proceso.finalizacion = rafaga;
 
-        for (var index = 0; index < colaListosLength; index++) {
-            proceso.finalizacion += colaListos[index].rafaga;
-        }
+        proceso.finalizacion = colaListos.reduce(function(a, b) { return a + b.rafaga; }, rafaga);
 
         proceso.retorno = proceso.finalizacion - proceso.llegada;
         proceso.espera = proceso.retorno - proceso.rafaga;
