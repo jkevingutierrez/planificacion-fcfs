@@ -319,15 +319,6 @@
         for (var indexProceso = procesoActual; indexProceso < longitudCola; indexProceso++) {
             var procesoInterno = colaListos[indexProceso];
             if (procesoInterno.comienzo <= tiempo && procesoInterno.finalizacion >= tiempo) {
-                var textoEnEjecucion = d3.select('#proceso_ejecucion');
-                d3.select("#rafaga_proceso").text(procesoInterno.rafaga);
-
-                if (procesoInterno.bloqueado) {
-                    textoEnEjecucion.text('');
-                } else {
-                    textoEnEjecucion.text(procesoInterno.nombre);
-                    tiempo_restante = 0;
-                }
 
                 d3.selectAll('.ejecutandose')
                     .classed('ejecutandose', false);
@@ -339,9 +330,11 @@
                     .classed('ejecutandose', true);
 
                 procesoActual = indexProceso;
+
+                d3.select('#proceso_ejecucion').text(procesoInterno.nombre);
+                d3.select("#rafaga_proceso").text(procesoInterno.rafaga);
+                d3.select('#tiempo_restante').text(procesoInterno.finalizacion - tiempoActual);
             }
-            tiempo_restante++;
-            d3.select('#tiempo_restante').text(colaListos[procesoActual].finalizacion - tiempoActual);
         }
     }
 

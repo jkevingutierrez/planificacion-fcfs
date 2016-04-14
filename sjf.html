@@ -9,7 +9,7 @@
     <link rel="stylesheet" href="css/vendor/bootstrap/css/bootstrap.min.css">
     <link rel="stylesheet" href="css/vendor/sweetalert.min.css">
     <link rel="stylesheet" href="css/main.css">
-    <link rel="stylesheet" href="css/sjf/paint.css">
+    <link rel="stylesheet" href="css/paint.css">
 </head>
 
 <body>
@@ -27,20 +27,22 @@
                 <ul class="nav navbar-nav">
                     <li><a href="index.html">Inicio</a></li>
                     <li><a href="fcfs.html">FCFS</a></li>
-                    <li class="active"><a href="sjf.html">SJF</a></li>
+                    <li class="active"><a href="sjf.html">SJF - No Expulsivo</a></li>
                 </ul>
             </div>
         </div>
     </nav>
+
+    <header class="container">
+        <h1>Shortest Job First (SJF) - No Expulsivo</h1>
+    </header>
+
     <div class="col-md-3 col-md-offset-6 text-left" id="info">
         <h5>Tiempo transcurrido: <span id="tiempo_actual">0</span></h5>
         <h5>Proceso en ejecución: <span id="proceso_ejecucion">Proceso 0</span></h5>
         <h5>Rafaga: <span id="rafaga_proceso">8</span></h5>
         <h5>Tiempo restante: <span id="tiempo_restante">0</span> </h5>
     </div>
-    <header class="container">
-        <h1>ALGORITMO SJF</h1>
-    </header>
 
     <main role="main" class="container">
         <div class="row">
