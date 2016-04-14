@@ -320,6 +320,7 @@
             var procesoInterno = colaListos[indexProceso];
             if (procesoInterno.comienzo <= tiempo && procesoInterno.finalizacion > tiempo) {
                 var textoEnEjecucion = d3.select('#proceso_ejecucion');
+                d3.select("#rafaga_proceso").text(procesoInterno.rafaga);
 
                 if (procesoInterno.bloqueado) {
                     textoEnEjecucion.text('');
@@ -337,6 +338,9 @@
                     .classed('ejecutandose', true);
 
                 procesoActual = indexProceso;
+
+                console.log(d3.select("#proceso_ejecucion").text())
+
             }
         }
     }
