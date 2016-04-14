@@ -89,6 +89,8 @@
             var rafagaTotal = proceso.rafaga;
             proceso.rafaga = proceso.finalizacion - tiempo;
             proceso.rafagaFaltante = proceso.finalizacion - tiempo;
+            proceso.finalizacionTotal = proceso.finalizacion;
+
             proceso.bloqueado = tiempo;
             agregar_proceso_a_bloqueados(proceso);
             agregar_columna_tabla_bloqueados(proceso, rafagaTotal);
@@ -249,11 +251,11 @@
             .on('click', function() {
                 var filaActual = this.parentNode;
                 var idProceso = filaActual.id.replace('proceso-', '');
-                var proceso = colaBloqueados[idProceso];
 
-                proceso.rafaga = proceso.rafagaFaltante;
+                var proceso = new Proceso();
 
-                proceso.nombre = proceso.nombre + ' (Reanudado)';
+                proceso.rafaga = colaBloqueados[idProceso].rafagaFaltante;
+                proceso.nombre = colaBloqueados[idProceso].nombre + ' (Reanudado)';
 
                 crear_proceso(proceso.nombre, proceso.rafaga);
                 filaActual.remove();
