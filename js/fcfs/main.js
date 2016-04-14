@@ -42,7 +42,6 @@
 
     function crear_proceso(nombre, rafaga) {
         var proceso = new Proceso();
-        var colaListosLength = colaListos.length;
         var tiempo = tiempoActual;
 
         if (tiempo > tiempoLlegada) {

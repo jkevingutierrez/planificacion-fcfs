@@ -42,7 +42,6 @@
 
     function crear_proceso(nombre, rafaga) {
         var proceso = new Proceso();
-        var colaListosLength = colaListos.length;
         var tiempo = tiempoActual;
 
         if (tiempo > tiempoLlegada) {
@@ -60,8 +59,6 @@
         proceso.comienzo = proceso.espera + proceso.llegada;
 
         aggregar_proceso_a_listos(proceso);
-        agregar_columna_tabla_listos(proceso);
-        window.pintar_proceso(proceso, colaListos.length);
     }
 
     function bloquear_proceso(idProceso, fila) {
