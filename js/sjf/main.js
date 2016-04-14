@@ -36,7 +36,7 @@
         colaListos.push(proceso);
     }
 
-    function aggregar_proceso_a_bloqueados(proceso) {
+    function agregar_proceso_a_bloqueados(proceso) {
         colaBloqueados.push(proceso);
     }
 
@@ -92,7 +92,7 @@
             proceso.bloqueado = tiempo;
             proceso.rafagaFaltante = proceso.finalizacion - tiempo;
             proceso.finalizacionTotal = proceso.finalizacion;
-            aggregar_proceso_a_bloqueados(proceso);
+            agregar_proceso_a_bloqueados(proceso);
             agregar_columna_tabla_bloqueados(proceso, rafagaTotal);
 
             var contenedor = document.getElementsByClassName('table-container')[1];
@@ -126,9 +126,9 @@
             return tiempoActual < proceso.comienzo && !proceso.bloqueado;
         });
 
-        colaListos = colaBloqueados.concat(colaListosEjecutados).concat(colaListosSinEjecutar.sort(function(a, b) {
+        colaListos = colaBloqueados.concat(colaListosEjecutados.concat(colaListosSinEjecutar.sort(function(a, b) {
             return a.rafaga - b.rafaga;
-        }));
+        })));
     }
 
     function repintar_procesos() {
@@ -307,12 +307,11 @@
             .on('click', function() {
                 var filaActual = this.parentNode;
                 var idProceso = filaActual.id.replace('proceso-', '');
-                var proceso = colaBloqueados[idProceso];
 
-                proceso.nombre = proceso.nombre + ' (Reanudado)';
+                var proceso = new Proceso();
 
-                proceso.rafaga = proceso.rafagaFaltante;
-                console.log(proceso.rafaga);
+                proceso.nombre = colaBloqueados[idProceso].nombre + ' (Reanudado)';
+                proceso.rafaga = colaBloqueados[idProceso].rafagaFaltante;
 
                 crear_proceso(proceso.nombre, proceso.rafaga);
                 repintar_procesos();

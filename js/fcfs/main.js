@@ -32,11 +32,11 @@
     }
 
     // Funciones
-    function aggregar_proceso_a_listos(proceso) {
+    function agregar_proceso_a_listos(proceso) {
         colaListos.push(proceso);
     }
 
-    function aggregar_proceso_a_bloqueados(proceso) {
+    function agregar_proceso_a_bloqueados(proceso) {
         colaBloqueados.push(proceso);
     }
 
@@ -62,7 +62,7 @@
         proceso.espera = proceso.retorno - proceso.rafaga;
         proceso.comienzo = proceso.espera + proceso.llegada;
 
-        aggregar_proceso_a_listos(proceso);
+        agregar_proceso_a_listos(proceso);
         agregar_columna_tabla_listos(proceso);
         window.pintar_proceso(proceso, colaListos.length);
     }
@@ -90,7 +90,7 @@
             proceso.rafaga = proceso.finalizacion - tiempo;
             proceso.rafagaFaltante = proceso.finalizacion - tiempo;
             proceso.bloqueado = tiempo;
-            aggregar_proceso_a_bloqueados(proceso);
+            agregar_proceso_a_bloqueados(proceso);
             agregar_columna_tabla_bloqueados(proceso, rafagaTotal);
 
             var contenedor = document.getElementsByClassName('table-container')[1];
