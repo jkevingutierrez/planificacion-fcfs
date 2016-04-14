@@ -8,6 +8,7 @@
     var tiempoActual = 0;
     var tiempoLlegada = 0;
     var procesoActual = 0;
+    var tiempo_restante = 0;
 
     var rect = {
         width: 18,
@@ -150,10 +151,10 @@
             proceso.comienzo = proceso.espera + proceso.llegada;
 
             if (!proceso.bloqueado) {
-              agregar_columna_tabla_listos(proceso, i);
+                agregar_columna_tabla_listos(proceso, i);
+                window.pintar_proceso(proceso, i + 1);
             }
 
-            window.pintar_proceso(proceso, i + 1);
         }
     }
 
@@ -318,7 +319,7 @@
         var longitudCola = colaListos.length;
         for (var indexProceso = procesoActual; indexProceso < longitudCola; indexProceso++) {
             var procesoInterno = colaListos[indexProceso];
-            if (procesoInterno.comienzo <= tiempo && procesoInterno.finalizacion > tiempo) {
+            if (procesoInterno.comienzo <= tiempo && procesoInterno.finalizacion >= tiempo) {
                 var textoEnEjecucion = d3.select('#proceso_ejecucion');
                 d3.select("#rafaga_proceso").text(procesoInterno.rafaga);
 
@@ -326,6 +327,7 @@
                     textoEnEjecucion.text('');
                 } else {
                     textoEnEjecucion.text(procesoInterno.nombre);
+                    tiempo_restante = 0;
                 }
 
                 d3.selectAll('.ejecutandose')
@@ -338,10 +340,9 @@
                     .classed('ejecutandose', true);
 
                 procesoActual = indexProceso;
-
-                console.log(d3.select("#proceso_ejecucion").text())
-
             }
+            tiempo_restante++;
+            d3.select('#tiempo_restante').text(colaListos[procesoActual].finalizacion - tiempoActual);
         }
     }
 

@@ -130,9 +130,10 @@
 
         var textoNombre = bar.append("text")
             .attr("class", 'texto-nombre proceso-' + (length - 1))
-            .attr("x", (proceso.llegada * rect.width) + 30)
+            .attr("x", (proceso.finalizacion* rect.width) + 30)
             .attr("y", rectY + margin.top)
-            .text(proceso.nombre);
+            .text(proceso.nombre)
+            .style("fill", "red");
 
         var textoEspera = bar.append("text")
             .attr("class", 'texto-espera proceso-' + (length - 1))
