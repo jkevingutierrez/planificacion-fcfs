@@ -112,11 +112,11 @@
 
     function ordenar_lista() {
         var colaListosEjecutados = colaListos.filter(function(proceso) {
-          return tiempoActual >= proceso.comienzo;
+            return tiempoActual >= proceso.comienzo;
         });
 
         var colaListosSinEjecutar = colaListos.filter(function(proceso) {
-          return tiempoActual < proceso.comienzo;
+            return tiempoActual < proceso.comienzo;
         });
 
         colaListos = colaListosEjecutados.concat(colaListosSinEjecutar.sort(function(a, b) {
@@ -126,31 +126,31 @@
 
     function repintar_procesos() {
 
-      ordenar_lista();
+        ordenar_lista();
 
-      var tabla = d3.select('#tabla_procesos');
-      var tbody = tabla.select('tbody').html('');
+        var tabla = d3.select('#tabla_procesos');
+        var tbody = tabla.select('tbody').html('');
 
-      var bar = d3.select('.bar').html('');
+        var bar = d3.select('.bar').html('');
 
-      var colaListosLength = colaListos.length;
+        var colaListosLength = colaListos.length;
 
-      for (var i = 0; i < colaListosLength; i++) {
-         var proceso = colaListos [i];
+        for (var i = 0; i < colaListosLength; i++) {
+            var proceso = colaListos[i];
 
-         proceso.finalizacion = proceso.rafaga;
+            proceso.finalizacion = proceso.rafaga;
 
-        for (var j = 0; j < i; j++) {
-            proceso.finalizacion += colaListos[j].rafaga;
+            for (var j = 0; j < i; j++) {
+                proceso.finalizacion += colaListos[j].rafaga;
+            }
+
+            proceso.retorno = proceso.finalizacion - proceso.llegada;
+            proceso.espera = proceso.retorno - proceso.rafaga;
+            proceso.comienzo = proceso.espera + proceso.llegada;
+
+            agregar_columna_tabla_listos(proceso, i);
+            window.pintar_proceso(proceso, i + 1);
         }
-
-        proceso.retorno = proceso.finalizacion - proceso.llegada;
-        proceso.espera = proceso.retorno - proceso.rafaga;
-        proceso.comienzo = proceso.espera + proceso.llegada;
-
-        agregar_columna_tabla_listos(proceso, i);
-        window.pintar_proceso(proceso, i + 1);
-      }
     }
 
     function actualizar_procesos(idProceso) {
