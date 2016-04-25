@@ -236,7 +236,8 @@
     function crear_primer_proceso() {
         var nombreInicial = 'Proceso ' + (numeroProcesos++);
         var rafagaInicial = 8;
-        crear_proceso(nombreInicial, rafagaInicial);
+        var prioridadInicial = 1;
+        crear_proceso(nombreInicial, rafagaInicial, prioridadInicial);
     }
 
     function generar_proceso() {
