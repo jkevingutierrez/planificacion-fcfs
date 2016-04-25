@@ -54,8 +54,15 @@
 
         proceso.finalizacion = colaListos.reduce(function(a, b) { return a + b.rafaga; }, rafaga);
 
+
         proceso.retorno = proceso.finalizacion - proceso.llegada;
+        if (proceso.retorno < 0) {
+            proceso.retorno = 0;
+        }
         proceso.espera = proceso.retorno - proceso.rafaga;
+        if (proceso.espera < 0) {
+            proceso.espera = 0;
+        }
         proceso.comienzo = proceso.espera + proceso.llegada;
 
         aggregar_proceso_a_listos(proceso);
@@ -112,15 +119,15 @@
             return proceso.bloqueado;
         });
 
-        var colaListosEjecutados = colaListos.filter(function(proceso) {
+        var colaListosIniciados = colaListos.filter(function(proceso) {
             return tiempoActual >= proceso.comienzo && !proceso.bloqueado;
         });
 
-        var colaListosSinEjecutar = colaListos.filter(function(proceso) {
+        var colaListosSinIniciar = colaListos.filter(function(proceso) {
             return tiempoActual < proceso.comienzo && !proceso.bloqueado;
         });
 
-        colaListos = colaBloqueados.concat(colaListosEjecutados.concat(colaListosSinEjecutar.sort(function(a, b) {
+        colaListos = colaBloqueados.concat(colaListosIniciados.concat(colaListosSinIniciar.sort(function(a, b) {
             return a.rafaga - b.rafaga;
         })));
     }

@@ -5,11 +5,11 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Algoritmo SJF (Expulsivo)</title>
+    <title>Algoritmo Por prioridad (Expulsivo)</title>
     <link rel="stylesheet" href="css/vendor/bootstrap/css/bootstrap.min.css">
     <link rel="stylesheet" href="css/vendor/sweetalert.min.css">
     <link rel="stylesheet" href="css/main.css">
-    <link rel="stylesheet" href="css/sjf/paint.css">
+    <link rel="stylesheet" href="css/paint.css">
 </head>
 
 <body>
@@ -27,7 +27,8 @@
                 <ul class="nav navbar-nav">
                     <li><a href="index.html">Inicio</a></li>
                     <li><a href="fcfs.html">FCFS</a></li>
-                    <li class="active"><a href="sjf.html">SJF - No Expulsivo</a></li>
+                    <li><a href="sjf.html">SJF - No Expulsivo</a></li>
+                    <li><a href="prioridad.html">Prioridad - Expulsivo</a></li>
                 </ul>
             </div>
         </div>
@@ -39,7 +40,7 @@
             <h5>Tiempo restante: <span id="tiempo_restante">0</span> </h5>
         </div>
     <header class="container">
-        <h1>ALGORITMO SJF</h1>
+        <h1>Algoritmo por Prioridad - Expulsivo</h1>
     </header>
 
     <main role="main" class="container">
@@ -58,6 +59,7 @@
                                     <th>T. Finalización</th>
                                     <th>T. Retorno</th>
                                     <th>T. Espera</th>
+                                    <th>Prioridad</th>
                                     <th></th>
                                 </tr>
                             </thead>
@@ -75,6 +77,7 @@
                                 <th>T. Finalización</th>
                                 <th>T. Retorno</th>
                                 <th>T. Espera</th>
+                                <th>Prioridad</th>
                                 <th style="width: 10%;"></th>
                             </tr>
                         </thead>
@@ -130,8 +133,8 @@
 
     <script src="js/vendor/d3.min.js"></script>
     <script src="js/vendor/sweetalert.min.js"></script>
-    <script src="js/sjf/paint.js"></script>
-    <script src="js/sjf/main.js"></script>
+    <script src="js/paint.js"></script>
+    <script src="js/prioridad/main.js"></script>
 </body>
 
 </html>

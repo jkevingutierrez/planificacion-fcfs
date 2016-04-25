@@ -2,7 +2,7 @@
     "use strict";
 
     var width = 960,
-        height = 10000;
+        height = 500;
 
     var margin = {
         top: 25,
@@ -19,7 +19,7 @@
 
     var y = d3.scale.linear()
         .domain([0, yDomain])
-        .range([height, 0]);
+        .range([0, height]);
 
     var x = d3.scale.linear()
         .domain([0, xDomain])
@@ -46,12 +46,12 @@
 
     var gy = svg.append("g")
         .attr("class", "y axis")
-        .attr("transform", "translate(" + margin.left + ", 0)")
+        .attr("transform", "translate(" + margin.left + ", " + 0 + ")")
         .call(yAxis);
 
     var gx = svg.append("g")
         .attr("class", "x axis")
-        .attr("transform", "translate(" + margin.left + ", " + height + ")")
+        .attr("transform", "translate(" + margin.left + ", " + 0 + ")")
         .call(xAxis);
 
     var bar = svg.append("g")
@@ -59,38 +59,33 @@
         .attr("transform", "translate(5, " + (height - rect.height) + ")");
 
     function repintar_cuadricula(svgWidth, svgHeight) {
-        if (svgWidth < width) {
-            svgWidth = width;
-        }
 
-        if (svgHeight < height) {
-            svgHeight = height;
-        }
+        svgHeight += 10;
+        svgWidth += 200;
 
-        xDomain = (svgWidth + 200) / rect.width;
+        xDomain = (svgWidth) / rect.width;
 
         x.domain([0, xDomain])
-            .range([0, svgWidth + 200]);
+            .range([0, svgWidth]);
 
         xAxis.scale(x)
             .ticks(xDomain / 2)
             .tickSize(svgHeight);
 
-        yAxis.tickSize(svgWidth + 200);
+        yAxis.tickSize(svgWidth);
 
-        // yDomain = svgHeight / rect.height
+        yDomain = svgHeight / rect.height;
 
-        // y.domain([0, yDomain])
-        //    .range([svgHeight, 0]);
+        y.domain([0, yDomain])
+           .range([0, svgHeight]);
 
-        // yAxis.tickSize(svgWidth + 200);
-        //    .scale(y)
-        //    .ticks(yDomain);
+        yAxis.tickSize(svgWidth)
+           .scale(y)
+           .ticks(yDomain);
 
         gy.call(yAxis);
         gx.attr("transform", "translate(" + margin.left + ", " + svgHeight + ")")
             .call(xAxis);
-
     }
 
     window.pintar_proceso = function(proceso, length) {
@@ -103,32 +98,37 @@
 
         repintar_cuadricula(svgWidth, svgHeight);
 
-        bar.append("rect")
+        if (proceso.espera < 0) {
+          proceso.espera = 0;
+        }
+
+        var rectRestante = bar.append("rect")
             .attr("class", "restante proceso-" + (length - 1))
             .attr("x", proceso.llegada * rect.width)
             .attr("y", rectY)
             .attr("width", proceso.finalizacion * rect.width)
             .attr("height", rect.height);
 
-        bar.append("rect")
+        var rectEspera = bar.append("rect")
             .attr("class", "espera proceso-" + (length - 1))
             .attr("x", proceso.llegada * rect.width)
             .attr("y", rectY)
             .attr("width", proceso.espera * rect.width)
             .attr("height", rect.height);
 
-        bar.append("rect")
+        var rectEjecucion = bar.append("rect")
             .attr("class", "ejecucion proceso-" + (length - 1))
             .attr("x", proceso.comienzo * rect.width)
             .attr("y", rectY)
             .attr("width", proceso.rafaga * rect.width)
             .attr("height", rect.height);
 
-        bar.append("text")
+        var textoNombre = bar.append("text")
             .attr("class", 'texto-nombre proceso-' + (length - 1))
-            .attr("x", (proceso.llegada * rect.width) + 30)
+            .attr("x", (proceso.finalizacion* rect.width) + 30)
             .attr("y", rectY + margin.top)
-            .text(proceso.nombre);
+            .text(proceso.nombre)
+            .style("fill", "red");
 
         var textoEspera = bar.append("text")
             .attr("class", 'texto-espera proceso-' + (length - 1))
@@ -139,14 +139,29 @@
             textoEspera.text(proceso.espera);
         }
 
-        bar.append("text")
+        var textoRafaga = bar.append("text")
             .attr("class", 'texto-rafaga proceso-' + (length - 1))
             .attr("x", (proceso.comienzo * rect.width) + 5)
             .attr("y", rectY + margin.top)
             .text(proceso.rafaga);
 
-        bar.append("text")
+        var textoRestante = bar.append("text")
             .attr("class", 'texto-restante proceso-' + (length - 1))
             .attr("y", rectY + margin.top);
+
+        if (proceso.bloqueado) {
+          rectRestante.classed('bloqueado', true);
+          rectEspera.classed('bloqueado', true);
+          rectEjecucion.classed('bloqueado', true);
+
+          rectRestante.attr('width', proceso.finalizacionTotal * rect.width);
+
+          rectEjecucion.attr('width', (proceso.bloqueado - proceso.comienzo) * rect.width);
+
+          textoRafaga.text(proceso.bloqueado - proceso.comienzo);
+          textoRestante.attr('x', ((proceso.finalizacionTotal) * rect.width) - 20)
+                .text(proceso.finalizacionTotal - proceso.bloqueado);
+
+        }
     };
 })();

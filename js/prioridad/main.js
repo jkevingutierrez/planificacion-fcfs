@@ -23,6 +23,7 @@
         this.finalizacion = 0;
         this.retorno = 0;
         this.espera = 0;
+        this.prioridad = 0;
         this.bloqueado = false;
     }
 
@@ -32,7 +33,7 @@
     }
 
     // Funciones
-    function agregar_proceso_a_listos(proceso) {
+    function aggregar_proceso_a_listos(proceso) {
         colaListos.push(proceso);
     }
 
@@ -40,7 +41,7 @@
         colaBloqueados.push(proceso);
     }
 
-    function crear_proceso(nombre, rafaga) {
+    function crear_proceso(nombre, rafaga, prioridad) {
         var proceso = new Proceso();
         var tiempo = tiempoActual;
 
@@ -57,10 +58,12 @@
         proceso.retorno = proceso.finalizacion - proceso.llegada;
         proceso.espera = proceso.retorno - proceso.rafaga;
         proceso.comienzo = proceso.espera + proceso.llegada;
+        proceso.prioridad = prioridad;
+        if (!proceso.prioridad) {
+            proceso.prioridad = Math.floor((Math.random() * 4) + 1);
+        }
 
-        agregar_proceso_a_listos(proceso);
-        agregar_columna_tabla_listos(proceso);
-        window.pintar_proceso(proceso, colaListos.length);
+        aggregar_proceso_a_listos(proceso);
     }
 
     function bloquear_proceso(idProceso, fila) {
@@ -106,6 +109,62 @@
                 type: 'error',
                 confirmButtonText: 'OK'
             });
+        }
+    }
+
+    function ordenar_lista() {
+        var colaBloqueados = colaListos.filter(function(proceso) {
+            return proceso.bloqueado;
+        });
+
+        var colaListosEjecutados = colaListos.filter(function(proceso) {
+            return tiempoActual >= proceso.finalizacion && !proceso.bloqueado;
+        });
+
+        var colaListosSinEjecutar = colaListos.filter(function(proceso) {
+            return tiempoActual < proceso.finalizacion && !proceso.bloqueado;
+        });
+
+        colaListos = colaBloqueados.concat(colaListosEjecutados.concat(colaListosSinEjecutar.sort(function(a, b) {
+            return a.prioridad - b.prioridad;
+        })));
+    }
+
+    function repintar_procesos() {
+
+        ordenar_lista();
+
+        var tabla = d3.select('#tabla_procesos');
+        var tbody = tabla.select('tbody').html('');
+
+        var bar = d3.select('.bar').html('');
+
+        var colaListosLength = colaListos.length;
+
+        for (var i = 0; i < colaListosLength; i++) {
+            var proceso = colaListos[i];
+
+            proceso.finalizacion = proceso.rafaga;
+
+            for (var j = 0; j < i; j++) {
+                proceso.finalizacion += colaListos[j].rafaga;
+            }
+
+            proceso.retorno = proceso.finalizacion - proceso.llegada;
+            if (proceso.retorno < 0) {
+                proceso.retorno = 0;
+            }
+            proceso.espera = proceso.retorno - proceso.rafaga;
+            if (proceso.espera < 0) {
+                proceso.espera = 0;
+            }
+            proceso.comienzo = proceso.espera + proceso.llegada;
+
+            if (!proceso.bloqueado) {
+                agregar_columna_tabla_listos(proceso, i);
+                window.pintar_proceso(proceso, i + 1);
+            }
+
         }
     }
 
@@ -184,15 +243,21 @@
         var nombre = 'Proceso ' + (numeroProcesos++);
         var rafaga = Math.floor((Math.random() * 10) + 1);
         crear_proceso(nombre, rafaga);
+
+        repintar_procesos();
     }
 
-    function agregar_columna_tabla_listos(proceso) {
+    function agregar_columna_tabla_listos(proceso, length) {
+        if (length !== 0 && !length) {
+            length = colaListos.length - 1;
+        }
+
         var tabla = d3.select('#tabla_procesos');
         var tbody = tabla.select('tbody');
 
         var fila = tbody.append('tr')
             .attr('class', 'fila-proceso')
-            .attr('id', 'proceso-' + (colaListos.length - 1));
+            .attr('id', 'proceso-' + length);
 
         fila.append('td')
             .text(proceso.nombre);
@@ -214,6 +279,9 @@
 
         fila.append('td')
             .text(proceso.espera);
+
+        fila.append('td')
+            .text(proceso.prioridad);
 
         fila.append('td')
             .html('<button type="button" class="btn btn-danger" title="Bloquear proceso"><span class="glyphicon glyphicon-pause" aria-hidden="true"></span></button>')
@@ -250,10 +318,12 @@
 
                 var proceso = new Proceso();
 
-                proceso.rafaga = colaBloqueados[idProceso].rafagaFaltante;
                 proceso.nombre = colaBloqueados[idProceso].nombre + ' (Reanudado)';
+                proceso.rafaga = colaBloqueados[idProceso].rafagaFaltante;
+                proceso.prioridad = colaBloqueados[idProceso].prioridad;
 
-                crear_proceso(proceso.nombre, proceso.rafaga);
+                crear_proceso(proceso.nombre, proceso.rafaga, proceso.prioridad);
+                repintar_procesos();
                 filaActual.remove();
             });
     }
@@ -263,7 +333,8 @@
         var longitudCola = colaListos.length;
         for (var indexProceso = procesoActual; indexProceso < longitudCola; indexProceso++) {
             var procesoInterno = colaListos[indexProceso];
-            if (procesoInterno.comienzo <= tiempo && procesoInterno.finalizacion > tiempo) {
+            if (procesoInterno.comienzo <= tiempo && procesoInterno.finalizacion >= tiempo) {
+
                 d3.selectAll('.ejecutandose')
                     .classed('ejecutandose', false);
 
