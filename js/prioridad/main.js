@@ -19,11 +19,11 @@
         this.nombre = 'Proceso';
         this.llegada = 0;
         this.rafaga = 0;
+        this.prioridad = 0;
         this.comienzo = 0;
         this.finalizacion = 0;
         this.retorno = 0;
         this.espera = 0;
-        this.prioridad = 0;
         this.bloqueado = false;
     }
 
@@ -51,6 +51,7 @@
 
         proceso.nombre = nombre;
         proceso.rafaga = rafaga;
+        proceso.prioridad = prioridad;
         proceso.llegada = tiempoLlegada++;
 
         proceso.finalizacion = colaListos.reduce(function(a, b) { return a + b.rafaga; }, rafaga);
@@ -58,10 +59,6 @@
         proceso.retorno = proceso.finalizacion - proceso.llegada;
         proceso.espera = proceso.retorno - proceso.rafaga;
         proceso.comienzo = proceso.espera + proceso.llegada;
-        proceso.prioridad = prioridad;
-        if (!proceso.prioridad) {
-            proceso.prioridad = Math.floor((Math.random() * 4) + 1);
-        }
 
         aggregar_proceso_a_listos(proceso);
     }
@@ -243,7 +240,8 @@
     function generar_proceso() {
         var nombre = 'Proceso ' + (numeroProcesos++);
         var rafaga = Math.floor((Math.random() * 10) + 1);
-        crear_proceso(nombre, rafaga);
+        var prioridad = Math.floor((Math.random() * 4) + 1);
+        crear_proceso(nombre, rafaga, prioridad);
 
         repintar_procesos();
     }
