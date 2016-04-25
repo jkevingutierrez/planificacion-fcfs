@@ -23,6 +23,7 @@
         this.finalizacion = 0;
         this.retorno = 0;
         this.espera = 0;
+        this.prioridad = 0;
         this.bloqueado = false;
     }
 

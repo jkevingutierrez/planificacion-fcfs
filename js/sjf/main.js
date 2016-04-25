@@ -23,6 +23,7 @@
         this.finalizacion = 0;
         this.retorno = 0;
         this.espera = 0;
+        this.prioridad = 0;
         this.bloqueado = false;
     }
 
@@ -54,15 +55,8 @@
 
         proceso.finalizacion = colaListos.reduce(function(a, b) { return a + b.rafaga; }, rafaga);
 
-
         proceso.retorno = proceso.finalizacion - proceso.llegada;
-        if (proceso.retorno < 0) {
-            proceso.retorno = 0;
-        }
         proceso.espera = proceso.retorno - proceso.rafaga;
-        if (proceso.espera < 0) {
-            proceso.espera = 0;
-        }
         proceso.comienzo = proceso.espera + proceso.llegada;
 
         aggregar_proceso_a_listos(proceso);
@@ -153,7 +147,13 @@
             }
 
             proceso.retorno = proceso.finalizacion - proceso.llegada;
+            if (proceso.retorno < 0) {
+                proceso.retorno = 0;
+            }
             proceso.espera = proceso.retorno - proceso.rafaga;
+            if (proceso.espera < 0) {
+                proceso.espera = 0;
+            }
             proceso.comienzo = proceso.espera + proceso.llegada;
 
             if (!proceso.bloqueado) {
