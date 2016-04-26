@@ -110,17 +110,21 @@
     }
 
     function ordenar_lista() {
-        var colaBloqueados = colaListos.filter(function(proceso) {
-            return proceso.bloqueado;
-        });
 
-        var colaListosEjecutados = colaListos.filter(function(proceso) {
-            return tiempoActual >= proceso.finalizacion && !proceso.bloqueado;
-        });
+        var colaBloqueados = [];
+        var colaListosEjecutados = [];
+        var colaListosSinEjecutar = [];
+        var colaListosLength = colaListos.length;
 
-        var colaListosSinEjecutar = colaListos.filter(function(proceso) {
-            return tiempoActual < proceso.finalizacion && !proceso.bloqueado;
-        });
+        for(var index = 0; index < colaListosLength; index++) {
+            if (colaListos[index].bloqueado) {
+                colaBloqueados.push(colaListos[index]);
+            } else if (tiempoActual >= colaListos[index].finalizacion) {
+                colaListosEjecutados.push(colaListos[index]);
+            } else {
+                colaListosSinEjecutar.push(colaListos[index]);
+            }
+        }
 
         colaListos = colaBloqueados.concat(colaListosEjecutados.concat(colaListosSinEjecutar.sort(function(a, b) {
             return a.prioridad - b.prioridad;
