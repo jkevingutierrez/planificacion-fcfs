@@ -93,7 +93,9 @@
             var contenedor = document.getElementsByClassName('table-container')[1];
             contenedor.scrollTop = contenedor.scrollHeight;
 
-            fila.remove();
+            if (fila) {
+                fila.remove();
+            }
 
             colaListos[idProceso].rafaga = tiempo - proceso.comienzo;
             actualizar_procesos(idProceso);
@@ -115,7 +117,7 @@
         var colaListosSinIniciar = [];
         var colaListosLength = colaListos.length;
 
-        for(var index = 0; index < colaListosLength; index++) {
+        for (var index = 0; index < colaListosLength; index++) {
             if (colaListos[index].bloqueado) {
                 colaBloqueados.push(colaListos[index]);
             } else if (tiempoActual >= colaListos[index].comienzo) {
@@ -320,7 +322,9 @@
 
                 crear_proceso(proceso.nombre, proceso.rafaga);
                 repintar_procesos();
-                filaActual.remove();
+                if (filaActual) {
+                    filaActual.remove();
+                }
             });
     }
 

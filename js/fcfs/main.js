@@ -95,7 +95,9 @@
             var contenedor = document.getElementsByClassName('table-container')[1];
             contenedor.scrollTop = contenedor.scrollHeight;
 
-            fila.remove();
+            if (fila) {
+                fila.remove();
+            }
 
             colaListos[idProceso].rafaga = tiempo - proceso.comienzo;
             actualizar_procesos(idProceso);
@@ -255,7 +257,9 @@
                 proceso.nombre = colaBloqueados[idProceso].nombre + ' (Reanudado)';
 
                 crear_proceso(proceso.nombre, proceso.rafaga);
-                filaActual.remove();
+                if (filaActual) {
+                    filaActual.remove();
+                }
             });
     }
 
