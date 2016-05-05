@@ -286,7 +286,6 @@
 
             if (procesoInterno.rafaga > 5 && procesoInterno.comienzo + 5 === tiempo) {
                 var indexProcesoBloqueado = bloquear_proceso(indexProceso);
-                console.log(indexProcesoBloqueado);
                 reanudar_proceso(indexProcesoBloqueado);
             }
 
