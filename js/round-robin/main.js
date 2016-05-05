@@ -15,7 +15,7 @@
     };
 
     var constants = {
-        TIEMPOESPERA: 50001,
+        TIEMPOESPERA: 5001,
         PROCESOSINICIALES: 5,
         TIEMPOQUANTUM: 5
     };
