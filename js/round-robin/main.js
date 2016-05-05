@@ -286,7 +286,7 @@
         for (var indexProceso = procesoActual; indexProceso < longitudCola; indexProceso++) {
             var procesoInterno = colaListos[indexProceso];
 
-            if (procesoInterno.rafaga > 5 && procesoInterno.comienzo + constants.TIEMPOQUANTUM === tiempo) {
+            if (procesoInterno.rafaga > constants.TIEMPOQUANTUM && procesoInterno.comienzo + constants.TIEMPOQUANTUM === tiempo) {
                 var indexProcesoBloqueado = bloquear_proceso(indexProceso);
                 reanudar_proceso(indexProcesoBloqueado);
             }
