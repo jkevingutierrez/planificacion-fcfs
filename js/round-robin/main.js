@@ -19,21 +19,22 @@
         this.nombre = 'Proceso';
         this.llegada = 0;
         this.rafaga = 0;
-        this.prioridad = 0;
         this.comienzo = 0;
         this.finalizacion = 0;
         this.retorno = 0;
         this.espera = 0;
+        this.prioridad = 0;
         this.bloqueado = false;
     }
 
     function Main() {
         this.tiempoEspera = 5001;
         this.procesosIniciales = 5;
+        this.tiempoQuantum = 5000;
     }
 
     // Funciones
-    function aggregar_proceso_a_listos(proceso) {
+    function agregar_proceso_a_listos(proceso) {
         colaListos.push(proceso);
     }
 
@@ -41,7 +42,7 @@
         colaBloqueados.push(proceso);
     }
 
-    function crear_proceso(nombre, rafaga, prioridad) {
+    function crear_proceso(nombre, rafaga) {
         var proceso = new Proceso();
         var tiempo = tiempoActual;
 
@@ -51,7 +52,6 @@
 
         proceso.nombre = nombre;
         proceso.rafaga = rafaga;
-        proceso.prioridad = prioridad;
         proceso.llegada = tiempoLlegada++;
 
         proceso.finalizacion = colaListos.reduce(function(a, b) { return a + b.rafaga; }, rafaga);
@@ -60,13 +60,19 @@
         proceso.espera = proceso.retorno - proceso.rafaga;
         proceso.comienzo = proceso.espera + proceso.llegada;
 
-        aggregar_proceso_a_listos(proceso);
+        agregar_proceso_a_listos(proceso);
+        agregar_columna_tabla_listos(proceso);
+        window.pintar_proceso(proceso, colaListos.length);
     }
 
     function bloquear_proceso(idProceso, fila) {
         var tiempo = tiempoActual;
         var proceso = colaListos[idProceso];
         if (tiempo < proceso.finalizacion && tiempo >= proceso.comienzo) {
+            if (!fila) {
+                fila = d3.select('.fila-proceso#proceso-' + idProceso);
+            }
+
             d3.selectAll('.proceso-' + idProceso)
                 .classed('bloqueado', true);
 
@@ -101,6 +107,8 @@
             colaListos[idProceso].rafaga = tiempo - proceso.comienzo;
             actualizar_procesos(idProceso);
 
+            return (colaBloqueados.length - 1);
+
         } else {
             swal({
                 title: 'Error!',
@@ -108,66 +116,6 @@
                 type: 'error',
                 confirmButtonText: 'OK'
             });
-        }
-    }
-
-    function ordenar_lista() {
-
-        var colaBloqueados = [];
-        var colaListosEjecutados = [];
-        var colaListosSinEjecutar = [];
-        var colaListosLength = colaListos.length;
-
-        for (var index = 0; index < colaListosLength; index++) {
-            if (colaListos[index].bloqueado) {
-                colaBloqueados.push(colaListos[index]);
-            } else if (tiempoActual >= colaListos[index].finalizacion) {
-                colaListosEjecutados.push(colaListos[index]);
-            } else {
-                colaListosSinEjecutar.push(colaListos[index]);
-            }
-        }
-
-        colaListos = colaBloqueados.concat(colaListosEjecutados.concat(colaListosSinEjecutar.sort(function(a, b) {
-            return a.prioridad - b.prioridad;
-        })));
-    }
-
-    function repintar_procesos() {
-
-        ordenar_lista();
-
-        var tabla = d3.select('#tabla_procesos');
-        var tbody = tabla.select('tbody').html('');
-
-        var bar = d3.select('.bar').html('');
-
-        var colaListosLength = colaListos.length;
-
-        for (var i = 0; i < colaListosLength; i++) {
-            var proceso = colaListos[i];
-
-            proceso.finalizacion = proceso.rafaga;
-
-            for (var j = 0; j < i; j++) {
-                proceso.finalizacion += colaListos[j].rafaga;
-            }
-
-            proceso.retorno = proceso.finalizacion - proceso.llegada;
-            if (proceso.retorno < 0) {
-                proceso.retorno = 0;
-            }
-            proceso.espera = proceso.retorno - proceso.rafaga;
-            if (proceso.espera < 0) {
-                proceso.espera = 0;
-            }
-            proceso.comienzo = proceso.espera + proceso.llegada;
-
-            if (!proceso.bloqueado) {
-                agregar_columna_tabla_listos(proceso, i);
-                window.pintar_proceso(proceso, i + 1);
-            }
-
         }
     }
 
@@ -239,30 +187,22 @@
     function crear_primer_proceso() {
         var nombreInicial = 'Proceso ' + (numeroProcesos++);
         var rafagaInicial = 8;
-        var prioridadInicial = 1;
-        crear_proceso(nombreInicial, rafagaInicial, prioridadInicial);
+        crear_proceso(nombreInicial, rafagaInicial);
     }
 
     function generar_proceso() {
         var nombre = 'Proceso ' + (numeroProcesos++);
         var rafaga = Math.floor((Math.random() * 10) + 1);
-        var prioridad = Math.floor((Math.random() * 4) + 1);
-        crear_proceso(nombre, rafaga, prioridad);
-
-        repintar_procesos();
+        crear_proceso(nombre, rafaga);
     }
 
-    function agregar_columna_tabla_listos(proceso, length) {
-        if (length !== 0 && !length) {
-            length = colaListos.length - 1;
-        }
-
+    function agregar_columna_tabla_listos(proceso) {
         var tabla = d3.select('#tabla_procesos');
         var tbody = tabla.select('tbody');
 
         var fila = tbody.append('tr')
             .attr('class', 'fila-proceso')
-            .attr('id', 'proceso-' + length);
+            .attr('id', 'proceso-' + (colaListos.length - 1));
 
         fila.append('td')
             .text(proceso.nombre);
@@ -284,9 +224,6 @@
 
         fila.append('td')
             .text(proceso.espera);
-
-        fila.append('td')
-            .text(proceso.prioridad);
 
         fila.append('td')
             .html('<button type="button" class="btn btn-danger" title="Bloquear proceso"><span class="glyphicon glyphicon-pause" aria-hidden="true"></span></button>')
@@ -321,19 +258,24 @@
                 var filaActual = this.parentNode;
                 var idProceso = filaActual.id.replace('proceso-', '');
 
-                var proceso = new Proceso();
-
-                proceso.nombre = colaBloqueados[idProceso].nombre + ' (Reanudado)';
-                proceso.rafaga = colaBloqueados[idProceso].rafagaFaltante;
-                proceso.prioridad = colaBloqueados[idProceso].prioridad;
-
-                crear_proceso(proceso.nombre, proceso.rafaga, proceso.prioridad);
-                repintar_procesos();
-
-                if (filaActual) {
-                    filaActual.remove();
-                }
+                reanudar_proceso(idProceso, filaActual);
             });
+    }
+
+    function reanudar_proceso(idProceso, fila) {
+        if (!fila) {
+            fila = d3.select('.fila-bloqueado#proceso-' + idProceso);
+        }
+
+        var proceso = new Proceso();
+
+        proceso.rafaga = colaBloqueados[idProceso].rafagaFaltante;
+        proceso.nombre = colaBloqueados[idProceso].nombre + ' (Reanudado)';
+
+        crear_proceso(proceso.nombre, proceso.rafaga);
+        if (fila) {
+            fila.remove();
+        }
     }
 
     function validar_proceso_en_ejecucion() {
@@ -341,8 +283,14 @@
         var longitudCola = colaListos.length;
         for (var indexProceso = procesoActual; indexProceso < longitudCola; indexProceso++) {
             var procesoInterno = colaListos[indexProceso];
-            if (procesoInterno.comienzo <= tiempo && procesoInterno.finalizacion >= tiempo) {
 
+            if (procesoInterno.rafaga > 5 && procesoInterno.comienzo + 5 === tiempo) {
+                var indexProcesoBloqueado = bloquear_proceso(indexProceso);
+                console.log(indexProcesoBloqueado);
+                reanudar_proceso(indexProcesoBloqueado);
+            }
+
+            if (procesoInterno.comienzo <= tiempo && procesoInterno.finalizacion > tiempo) {
                 d3.selectAll('.ejecutandose')
                     .classed('ejecutandose', false);
 
