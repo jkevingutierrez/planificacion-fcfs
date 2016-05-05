@@ -14,6 +14,11 @@
         height: 40
     };
 
+    var constants = {
+        TIEMPOESPERA: 50001,
+        PROCESOSINICIALES: 5,
+    };
+
     // Clases
     function Proceso() {
         this.nombre = 'Proceso';
@@ -27,10 +32,7 @@
         this.bloqueado = false;
     }
 
-    function Main() {
-        this.tiempoEspera = 5001;
-        this.procesosIniciales = 5;
-    }
+    function Main() {}
 
     // Funciones
     function aggregar_proceso_a_listos(proceso) {
@@ -356,13 +358,13 @@
     Main.prototype.ejecutar = function() {
         crear_primer_proceso();
 
-        for (var index = 0; index < this.procesosIniciales; index++) {
+        for (var index = 0; index < constants.PROCESOSINICIALES; index++) {
             generar_proceso();
         }
 
         window.setInterval(function() {
             generar_proceso();
-        }, this.tiempoEspera);
+        }, constants.TIEMPOESPERA);
 
         window.setInterval(function() {
             d3.select('#tiempo_actual')
