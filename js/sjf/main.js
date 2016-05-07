@@ -51,6 +51,8 @@
     function crear_proceso(nombre, rafaga) {
         var proceso = new Proceso();
         var tiempo = tiempoActual;
+        var procesoAnterior = colaListos[colaListos.length-1];
+        var finalizacionAnterior = 0;
 
         if (tiempo > tiempoLlegada) {
             tiempoLlegada = tiempo;
@@ -60,9 +62,11 @@
         proceso.rafaga = rafaga;
         proceso.llegada = tiempoLlegada++;
 
-        proceso.finalizacion = colaListos.reduce(function(a, b) {
-            return a + b.rafaga;
-        }, rafaga);
+        if (procesoAnterior) {
+            finalizacionAnterior = procesoAnterior.finalizacion;
+        }
+
+        proceso.finalizacion = rafaga + finalizacionAnterior;
 
         proceso.retorno = proceso.finalizacion - proceso.llegada;
         proceso.espera = proceso.retorno - proceso.rafaga;
@@ -130,13 +134,13 @@
     }
 
     function ordenar_lista() {
-
+        var tiempo = tiempoActual;
         var colaListosIniciados = [];
         var colaListosSinIniciar = [];
         var colaListosLongitud = colaListos.length;
 
         for (var index = 0; index < colaListosLongitud; index++) {
-            if (tiempoActual >= colaListos[index].comienzo) {
+            if (tiempo >= colaListos[index].comienzo) {
                 colaListosIniciados.push(colaListos[index]);
             } else {
                 colaListosSinIniciar.push(colaListos[index]);
@@ -163,12 +167,14 @@
 
         for (var i = 0; i < colaListosLongitud; i++) {
             var proceso = colaListos[i];
+            var procesoAnterior = colaListos[i-1];
+            var finalizacionAnterior = 0;
 
-            proceso.finalizacion = proceso.rafaga;
-
-            for (var j = 0; j < i; j++) {
-                proceso.finalizacion += colaListos[j].rafaga;
+            if (procesoAnterior) {
+                finalizacionAnterior = procesoAnterior.finalizacion;
             }
+
+            proceso.finalizacion = proceso.rafaga + finalizacionAnterior;
 
             proceso.retorno = proceso.finalizacion - proceso.llegada;
             if (proceso.retorno < 0) {
@@ -190,11 +196,14 @@
 
     function actualizar_procesos(idProceso) {
         for (var i = (Number(idProceso) + 1); i < colaListos.length; i++) {
-            colaListos[i].finalizacion = colaListos[i].rafaga;
+            var procesoAnterior = colaListos[i-1];
+            var finalizacionAnterior = 0;
 
-            for (var j = 0; j < i; j++) {
-                colaListos[i].finalizacion += colaListos[j].rafaga;
+            if (procesoAnterior) {
+                finalizacionAnterior = procesoAnterior.finalizacion;
             }
+
+            colaListos[i].finalizacion = colaListos[i].rafaga + finalizacionAnterior;
 
             colaListos[i].retorno = colaListos[i].finalizacion - colaListos[i].llegada;
             if (colaListos[i].retorno < 0 ) {
@@ -398,7 +407,7 @@
 
                 d3.select('#proceso_ejecucion').text(procesoInterno.nombre);
                 d3.select("#rafaga_proceso").text(procesoInterno.rafaga);
-                d3.select('#tiempo_restante').text(procesoInterno.finalizacion - tiempoActual);
+                d3.select('#tiempo_restante').text(procesoInterno.finalizacion - tiempo);
             }
         }
     }
