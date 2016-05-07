@@ -63,14 +63,20 @@
         proceso.rafaga = rafaga;
         proceso.llegada = tiempoLlegada++;
 
-        if (procesoAnterior) {
+        if (typeof procesoAnterior === 'object') {
             finalizacionAnterior = procesoAnterior.finalizacion;
         }
 
         proceso.finalizacion = rafaga + finalizacionAnterior;
 
         proceso.retorno = proceso.finalizacion - proceso.llegada;
+        if (proceso.retorno < 0) {
+            proceso.retorno = 0;
+        }
         proceso.espera = proceso.retorno - proceso.rafaga;
+        if (proceso.espera < 0) {
+            proceso.espera = 0;
+        }
         proceso.comienzo = proceso.espera + proceso.llegada;
 
         agregar_proceso_a_listos(proceso);
@@ -82,7 +88,7 @@
         var tiempo = tiempoActual;
         var proceso = colaListos[idProceso];
         if (tiempo < proceso.finalizacion && tiempo >= proceso.comienzo) {
-            if (!fila) {
+            if (typeof fila !== 'object') {
                 fila = d3.select('.fila-proceso#proceso-' + idProceso);
             }
 
@@ -111,6 +117,7 @@
             proceso.finalizacionTotal = proceso.finalizacion;
 
             proceso.bloqueado = tiempo;
+            proceso.finalizacion = tiempo;
             agregar_proceso_a_bloqueados(proceso);
             agregar_columna_tabla_bloqueados(proceso, rafagaTotal);
 
@@ -141,14 +148,20 @@
             var procesoAnterior = colaListos[i-1];
             var finalizacionAnterior = 0;
 
-            if (procesoAnterior) {
+            if (typeof procesoAnterior === 'object') {
                 finalizacionAnterior = procesoAnterior.finalizacion;
             }
 
             colaListos[i].finalizacion = colaListos[i].rafaga + finalizacionAnterior;
 
             colaListos[i].retorno = colaListos[i].finalizacion - colaListos[i].llegada;
+            if (colaListos[i].retorno < 0) {
+                colaListos[i].retorno = 0;
+            }
             colaListos[i].espera = colaListos[i].retorno - colaListos[i].rafaga;
+            if (colaListos[i].espera < 0) {
+                colaListos[i].espera = 0;
+            }
             colaListos[i].comienzo = colaListos[i].espera + colaListos[i].llegada;
 
             actualizar_columna_tabla_listos(i, colaListos[i]);
@@ -302,7 +315,7 @@
     }
 
     function reanudar_proceso(idProceso, fila) {
-        if (!fila) {
+        if (typeof fila !== 'object') {
             fila = d3.select('.fila-bloqueado#proceso-' + idProceso);
         }
 

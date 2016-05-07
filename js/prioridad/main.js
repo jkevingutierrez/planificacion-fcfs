@@ -64,14 +64,20 @@
         proceso.prioridad = prioridad;
         proceso.llegada = tiempoLlegada++;
 
-        if (procesoAnterior) {
+        if (typeof procesoAnterior === 'object') {
             finalizacionAnterior = procesoAnterior.finalizacion;
         }
 
         proceso.finalizacion = rafaga + finalizacionAnterior;
 
         proceso.retorno = proceso.finalizacion - proceso.llegada;
+        if (proceso.retorno < 0) {
+            proceso.retorno = 0;
+        }
         proceso.espera = proceso.retorno - proceso.rafaga;
+        if (proceso.espera < 0) {
+            proceso.espera = 0;
+        }
         proceso.comienzo = proceso.espera + proceso.llegada;
 
         aggregar_proceso_a_listos(proceso);
@@ -81,7 +87,7 @@
         var tiempo = tiempoActual;
         var proceso = colaListos[idProceso];
         if (tiempo < proceso.finalizacion && tiempo >= proceso.comienzo) {
-            if (!fila) {
+            if (typeof fila !== 'object') {
                 fila = d3.select('.fila-proceso#proceso-' + idProceso);
             }
 
@@ -110,6 +116,7 @@
             proceso.finalizacionTotal = proceso.finalizacion;
 
             proceso.bloqueado = tiempo;
+            proceso.finalizacion = tiempo;
             agregar_proceso_a_bloqueados(proceso);
             agregar_columna_tabla_bloqueados(proceso, rafagaTotal);
 
@@ -172,7 +179,7 @@
             var procesoAnterior = colaListos[i-1];
             var finalizacionAnterior = 0;
 
-            if (procesoAnterior) {
+            if (typeof procesoAnterior === 'object') {
                 finalizacionAnterior = procesoAnterior.finalizacion;
             }
 
@@ -189,7 +196,7 @@
             }
             proceso.comienzo = proceso.espera + proceso.llegada;
 
-            if (!proceso.bloqueado) {
+            if (proceso.bloqueado === false) {
                 agregar_columna_tabla_listos(proceso, i);
             }
             window.pintar_proceso(proceso, i + 1);
@@ -202,7 +209,7 @@
             var procesoAnterior = colaListos[i-1];
             var finalizacionAnterior = 0;
 
-            if (procesoAnterior) {
+            if (typeof procesoAnterior === 'object') {
                 finalizacionAnterior = procesoAnterior.finalizacion;
             }
 
