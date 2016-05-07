@@ -62,7 +62,9 @@
         proceso.prioridad = prioridad;
         proceso.llegada = tiempoLlegada++;
 
-        proceso.finalizacion = colaListos.reduce(function(a, b) { return a + b.rafaga; }, rafaga);
+        proceso.finalizacion = colaListos.reduce(function(a, b) {
+            return a + b.rafaga;
+        }, rafaga);
 
         proceso.retorno = proceso.finalizacion - proceso.llegada;
         proceso.espera = proceso.retorno - proceso.rafaga;
@@ -384,6 +386,8 @@
         var longitudCola = colaListos.length;
         for (var indexProceso = procesoActual; indexProceso < longitudCola; indexProceso++) {
             var procesoInterno = colaListos[indexProceso];
+
+            // Envejecimiento
             if (procesoInterno.finalizacion > tiempoActual && procesoInterno.prioridad > 2 && procesoInterno.comienzo > tiempoActual && (tiempoActual - procesoInterno.llegada) > 0 && (tiempoActual - procesoInterno.llegada) % 5 === 0) {
                 procesoInterno.prioridad--;
                 repintar_procesos();

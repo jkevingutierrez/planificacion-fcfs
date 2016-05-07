@@ -77,11 +77,11 @@
         yDomain = svgHeight / rect.height;
 
         y.domain([0, yDomain])
-           .range([0, svgHeight]);
+            .range([0, svgHeight]);
 
         yAxis.tickSize(svgWidth)
-           .scale(y)
-           .ticks(yDomain);
+            .scale(y)
+            .ticks(yDomain);
 
         gy.call(yAxis);
         gx.attr("transform", "translate(" + margin.left + ", " + svgHeight + ")")
@@ -121,7 +121,7 @@
 
         var textoNombre = bar.append("text")
             .attr("class", 'texto-nombre proceso-' + (length - 1))
-            .attr("x", (proceso.finalizacion* rect.width) + 30)
+            .attr("x", (proceso.finalizacion * rect.width) + 30)
             .attr("y", rectY + margin.top)
             .text(proceso.nombre)
             .style("fill", "red");
@@ -156,7 +156,7 @@
 
             textoRafaga.text(proceso.bloqueado - proceso.comienzo);
             textoRestante.attr('x', ((proceso.finalizacionTotal) * rect.width) - 20)
-                    .text(proceso.finalizacionTotal - proceso.bloqueado);
+                .text(proceso.finalizacionTotal - proceso.bloqueado);
         }
     };
 })();

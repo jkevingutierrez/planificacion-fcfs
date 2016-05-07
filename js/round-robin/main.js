@@ -61,7 +61,9 @@
         proceso.rafaga = rafaga;
         proceso.llegada = tiempoLlegada++;
 
-        proceso.finalizacion = colaListos.reduce(function(a, b) { return a + b.rafaga; }, rafaga);
+        proceso.finalizacion = colaListos.reduce(function(a, b) {
+            return a + b.rafaga;
+        }, rafaga);
 
         proceso.retorno = proceso.finalizacion - proceso.llegada;
         proceso.espera = proceso.retorno - proceso.rafaga;
