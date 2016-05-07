@@ -131,24 +131,21 @@
 
     function ordenar_lista() {
 
-        var colaBloqueados = [];
         var colaListosIniciados = [];
         var colaListosSinIniciar = [];
         var colaListosLongitud = colaListos.length;
 
         for (var index = 0; index < colaListosLongitud; index++) {
-            if (colaListos[index].bloqueado) {
-                colaBloqueados.push(colaListos[index]);
-            } else if (tiempoActual >= colaListos[index].comienzo) {
+            if (tiempoActual >= colaListos[index].comienzo) {
                 colaListosIniciados.push(colaListos[index]);
             } else {
                 colaListosSinIniciar.push(colaListos[index]);
             }
         }
 
-        colaListos = colaBloqueados.concat(colaListosIniciados.concat(colaListosSinIniciar.sort(function(a, b) {
+        colaListos = colaListosIniciados.concat(colaListosSinIniciar.sort(function(a, b) {
             return a.rafaga - b.rafaga;
-        })));
+        }));
     }
 
     function repintar_procesos() {
@@ -183,9 +180,9 @@
 
             if (!proceso.bloqueado) {
                 agregar_columna_tabla_listos(proceso, i);
-                window.pintar_proceso(proceso, i + 1);
             }
 
+            window.pintar_proceso(proceso, i + 1);
         }
     }
 
@@ -198,7 +195,13 @@
             }
 
             colaListos[i].retorno = colaListos[i].finalizacion - colaListos[i].llegada;
+            if (colaListos[i].retorno < 0 ) {
+                colaListos[i].retorno = 0;
+            }
             colaListos[i].espera = colaListos[i].retorno - colaListos[i].rafaga;
+            if (colaListos[i].espera < 0 ) {
+                colaListos[i].espera = 0;
+            }
             colaListos[i].comienzo = colaListos[i].espera + colaListos[i].llegada;
 
             actualizar_columna_tabla_listos(i, colaListos[i]);

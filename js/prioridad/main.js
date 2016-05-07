@@ -132,25 +132,21 @@
     }
 
     function ordenar_lista() {
-
-        var colaBloqueados = [];
         var colaListosEjecutados = [];
         var colaListosSinEjecutar = [];
         var colaListosLongitud = colaListos.length;
 
         for (var index = 0; index < colaListosLongitud; index++) {
-            if (colaListos[index].bloqueado) {
-                colaBloqueados.push(colaListos[index]);
-            } else if (tiempoActual >= colaListos[index].finalizacion) {
+            if (tiempoActual >= colaListos[index].finalizacion || colaListos[index].bloqueado) {
                 colaListosEjecutados.push(colaListos[index]);
             } else {
                 colaListosSinEjecutar.push(colaListos[index]);
             }
         }
 
-        colaListos = colaBloqueados.concat(colaListosEjecutados.concat(colaListosSinEjecutar.sort(function(a, b) {
+        colaListos = colaListosEjecutados.concat(colaListosSinEjecutar.sort(function(a, b) {
             return a.prioridad - b.prioridad;
-        })));
+        }));
     }
 
     function repintar_procesos() {
@@ -185,8 +181,8 @@
 
             if (!proceso.bloqueado) {
                 agregar_columna_tabla_listos(proceso, i);
-                window.pintar_proceso(proceso, i + 1);
             }
+            window.pintar_proceso(proceso, i + 1);
 
         }
     }
