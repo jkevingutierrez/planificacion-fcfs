@@ -8,6 +8,10 @@
     var tiempoActual = 0;
     var tiempoLlegada = 0;
     var procesoActual = 0;
+    var pausado = false;
+
+    var timerValidarProceso = 0;
+    var timerAgregarProceso = 0;
 
     var rect = {
         width: 18,
@@ -235,10 +239,19 @@
         fila.append('td')
             .html('<button type="button" class="btn btn-danger" title="Bloquear proceso"><span class="glyphicon glyphicon-pause" aria-hidden="true"></span></button>')
             .on('click', function() {
-                var filaActual = this.parentNode;
-                var idProceso = filaActual.id.replace('proceso-', '');
+                if (!pausado) {
+                    var filaActual = this.parentNode;
+                    var idProceso = filaActual.id.replace('proceso-', '');
 
-                bloquear_proceso(idProceso, filaActual);
+                    bloquear_proceso(idProceso, filaActual);
+                } else {
+                    swal({
+                        title: 'Error!',
+                        text: 'Reanude la ejecución para bloquear un proceso',
+                        type: 'error',
+                        confirmButtonText: 'OK'
+                    });
+                }
             });
     }
 
@@ -262,10 +275,20 @@
         fila.append('td')
             .html('<button type="button" class="btn btn-success" title="Reanudar proceso"><span class="glyphicon glyphicon-play" aria-hidden="true"></span></button>')
             .on('click', function() {
-                var filaActual = this.parentNode;
-                var idProceso = filaActual.id.replace('proceso-', '');
+                if (!pausado) {
+                    var filaActual = this.parentNode;
+                    var idProceso = filaActual.id.replace('proceso-', '');
 
-                reanudar_proceso(idProceso, filaActual);
+                    reanudar_proceso(idProceso, filaActual);
+                } else {
+                    swal({
+                        title: 'Error!',
+                        text: 'Reanude la ejecución para reanudar un proceso',
+                        type: 'error',
+                        confirmButtonText: 'OK'
+                    });
+                }
+
             });
     }
 
@@ -322,11 +345,11 @@
             generar_proceso();
         }
 
-        window.setInterval(function() {
+        timerAgregarProceso = window.setInterval(function() {
             generar_proceso();
         }, constantes.TIEMPOESPERA);
 
-        window.setInterval(function() {
+        timerValidarProceso = window.setInterval(function() {
             d3.select('#tiempo_actual')
                 .text(++tiempoActual);
 
@@ -336,6 +359,34 @@
 
         d3.select('.btn-add').on('click', function() {
             generar_proceso();
+        });
+
+        var toggleBtn = d3.select('#toggle-play').on('click', function() {
+            if (toggleBtn.classed('pause-btn')) {
+                clearInterval(timerAgregarProceso);
+                clearInterval(timerValidarProceso);
+                toggleBtn.html('<span class="glyphicon glyphicon-play" aria-hidden="true"></span> Reanudar ejecución')
+                    .attr('class', 'btn btn-success play-btn');
+
+                pausado = true;
+            } else if (toggleBtn.classed('play-btn')) {
+                timerAgregarProceso = window.setInterval(function() {
+                    generar_proceso();
+                }, constantes.TIEMPOESPERA);
+
+                timerValidarProceso = window.setInterval(function() {
+                    d3.select('#tiempo_actual')
+                        .text(++tiempoActual);
+
+                    validar_proceso_en_ejecucion();
+
+                }, 1000);
+
+                toggleBtn.html('<span class="glyphicon glyphicon-pause" aria-hidden="true"></span> Pausar ejecución')
+                    .attr('class', 'btn btn-danger pause-btn');
+
+                pausado = false;
+            }
         });
     };
 
