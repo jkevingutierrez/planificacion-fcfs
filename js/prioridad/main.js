@@ -196,7 +196,13 @@
             }
 
             colaListos[i].retorno = colaListos[i].finalizacion - colaListos[i].llegada;
+            if (colaListos[i].retorno < 0) {
+                colaListos[i].retorno = 0;
+            }
             colaListos[i].espera = colaListos[i].retorno - colaListos[i].rafaga;
+            if (colaListos[i].espera < 0) {
+                colaListos[i].espera = 0;
+            }
             colaListos[i].comienzo = colaListos[i].espera + colaListos[i].llegada;
 
             actualizar_columna_tabla_listos(i, colaListos[i]);
