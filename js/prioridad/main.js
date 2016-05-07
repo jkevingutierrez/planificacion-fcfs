@@ -374,10 +374,12 @@
         var proceso = new Proceso();
 
         proceso.rafaga = colaBloqueados[idProceso].rafagaFaltante;
-        proceso.nombre = colaBloqueados[idProceso].nombre + ' (Reanudado)';
+        proceso.nombre = colaBloqueados[idProceso].nombre + '    (Reanudado)';
         proceso.prioridad = colaBloqueados[idProceso].prioridad;
 
-        crear_proceso(proceso.nombre, proceso.rafaga);
+        crear_proceso(proceso.nombre, proceso.rafaga, proceso.prioridad);
+        repintar_procesos();
+
         if (fila) {
             fila.remove();
         }
