@@ -77,8 +77,12 @@
             d3.select('.ejecucion.proceso-' + idProceso)
                 .attr('width', (tiempo - proceso.comienzo) * rect.width);
 
+            d3.select('.restante.proceso-' + idProceso)
+                .attr('x', (tiempo) * rect.width)
+                .attr('width', (proceso.finalizacion - tiempo) * rect.width);
+
             d3.select('.texto-restante.proceso-' + idProceso)
-                .attr('x', ((proceso.finalizacion) * rect.width) - 20)
+                .attr('x', ((tiempo) * rect.width) + 5)
                 .text(proceso.finalizacion - tiempo);
 
             d3.select('.texto-rafaga.proceso-' + idProceso)

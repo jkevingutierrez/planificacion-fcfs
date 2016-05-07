@@ -146,18 +146,17 @@
             .attr("y", rectY + margin.top);
 
         if (proceso.bloqueado) {
-          rectRestante.classed('bloqueado', true);
-          rectEspera.classed('bloqueado', true);
-          rectEjecucion.classed('bloqueado', true);
+            rectRestante.classed('bloqueado', true);
+            rectEspera.classed('bloqueado', true);
+            rectEjecucion.classed('bloqueado', true);
 
-          rectRestante.attr('width', proceso.finalizacionTotal * rect.width);
+            rectRestante.attr('width', proceso.finalizacionTotal * rect.width);
 
-          rectEjecucion.attr('width', (proceso.bloqueado - proceso.comienzo) * rect.width);
+            rectEjecucion.attr('width', (proceso.bloqueado - proceso.comienzo) * rect.width);
 
-          textoRafaga.text(proceso.bloqueado - proceso.comienzo);
-          textoRestante.attr('x', ((proceso.finalizacionTotal) * rect.width) - 20)
-                .text(proceso.finalizacionTotal - proceso.bloqueado);
-
+            textoRafaga.text(proceso.bloqueado - proceso.comienzo);
+            textoRestante.attr('x', ((proceso.finalizacionTotal) * rect.width) - 20)
+                    .text(proceso.finalizacionTotal - proceso.bloqueado);
         }
     };
 })();

@@ -77,8 +77,12 @@
             d3.select('.ejecucion.proceso-' + idProceso)
                 .attr('width', (tiempo - proceso.comienzo) * rect.width);
 
+            d3.select('.restante.proceso-' + idProceso)
+                .attr('x', (tiempo) * rect.width)
+                .attr('width', (proceso.finalizacion - tiempo) * rect.width);
+
             d3.select('.texto-restante.proceso-' + idProceso)
-                .attr('x', ((proceso.finalizacion) * rect.width) - 20)
+                .attr('x', ((tiempo) * rect.width) + 5)
                 .text(proceso.finalizacion - tiempo);
 
             d3.select('.texto-rafaga.proceso-' + idProceso)
@@ -345,6 +349,11 @@
         var longitudCola = colaListos.length;
         for (var indexProceso = procesoActual; indexProceso < longitudCola; indexProceso++) {
             var procesoInterno = colaListos[indexProceso];
+            if (procesoInterno.finalizacion > tiempoActual && procesoInterno.prioridad > 2 && procesoInterno.comienzo > tiempoActual && (tiempoActual - procesoInterno.llegada) > 0 && (tiempoActual - procesoInterno.llegada) % 5 === 0) {
+                procesoInterno.prioridad--;
+                repintar_procesos();
+            }
+
             if (procesoInterno.comienzo <= tiempo && procesoInterno.finalizacion >= tiempo) {
 
                 d3.selectAll('.ejecutandose')
