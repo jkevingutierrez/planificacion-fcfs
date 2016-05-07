@@ -14,10 +14,11 @@
         height: 40
     };
 
-    var constants = {
+    var constantes = {
         TIEMPOESPERA: 5001,
         PROCESOSINICIALES: 5,
-        TIEMPOQUANTUM: 5
+        TIEMPOQUANTUM: 5,
+        RAFAGARANDOM: 10
     };
 
     // Clases
@@ -194,7 +195,7 @@
 
     function generar_proceso() {
         var nombre = 'Proceso ' + (numeroProcesos++);
-        var rafaga = Math.floor((Math.random() * 10) + 1);
+        var rafaga = Math.floor((Math.random() * constantes.RAFAGARANDOM) + 1);
         crear_proceso(nombre, rafaga);
     }
 
@@ -286,7 +287,7 @@
         for (var indexProceso = procesoActual; indexProceso < longitudCola; indexProceso++) {
             var procesoInterno = colaListos[indexProceso];
 
-            if (procesoInterno.rafaga > constants.TIEMPOQUANTUM && procesoInterno.comienzo + constants.TIEMPOQUANTUM === tiempo) {
+            if (procesoInterno.rafaga > constantes.TIEMPOQUANTUM && procesoInterno.comienzo + constantes.TIEMPOQUANTUM === tiempo) {
                 var indexProcesoBloqueado = bloquear_proceso(indexProceso);
                 reanudar_proceso(indexProcesoBloqueado);
             }
@@ -313,13 +314,13 @@
     Main.prototype.ejecutar = function() {
         crear_primer_proceso();
 
-        for (var index = 0; index < constants.PROCESOSINICIALES; index++) {
+        for (var index = 0; index < constantes.PROCESOSINICIALES; index++) {
             generar_proceso();
         }
 
         window.setInterval(function() {
             generar_proceso();
-        }, constants.TIEMPOESPERA);
+        }, constantes.TIEMPOESPERA);
 
         window.setInterval(function() {
             d3.select('#tiempo_actual')

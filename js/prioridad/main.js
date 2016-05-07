@@ -14,9 +14,11 @@
         height: 40
     };
 
-    var constants = {
+    var constantes = {
         TIEMPOESPERA: 5001,
         PROCESOSINICIALES: 5,
+        RAFAGARANDOM: 10,
+        PRIORIDADRANDOM: 4
     };
 
     // Clases
@@ -118,9 +120,9 @@
         var colaBloqueados = [];
         var colaListosEjecutados = [];
         var colaListosSinEjecutar = [];
-        var colaListosLength = colaListos.length;
+        var colaListosLongitud = colaListos.length;
 
-        for (var index = 0; index < colaListosLength; index++) {
+        for (var index = 0; index < colaListosLongitud; index++) {
             if (colaListos[index].bloqueado) {
                 colaBloqueados.push(colaListos[index]);
             } else if (tiempoActual >= colaListos[index].finalizacion) {
@@ -144,9 +146,9 @@
 
         var bar = d3.select('.bar').html('');
 
-        var colaListosLength = colaListos.length;
+        var colaListosLongitud = colaListos.length;
 
-        for (var i = 0; i < colaListosLength; i++) {
+        for (var i = 0; i < colaListosLongitud; i++) {
             var proceso = colaListos[i];
 
             proceso.finalizacion = proceso.rafaga;
@@ -247,16 +249,16 @@
 
     function generar_proceso() {
         var nombre = 'Proceso ' + (numeroProcesos++);
-        var rafaga = Math.floor((Math.random() * 10) + 1);
-        var prioridad = Math.floor((Math.random() * 4) + 1);
+        var rafaga = Math.floor((Math.random() * constantes.RAFAGARANDOM) + 1);
+        var prioridad = Math.floor((Math.random() * constantes.PRIORIDADRANDOM) + 1);
         crear_proceso(nombre, rafaga, prioridad);
 
         repintar_procesos();
     }
 
-    function agregar_columna_tabla_listos(proceso, length) {
-        if (length !== 0 && !length) {
-            length = colaListos.length - 1;
+    function agregar_columna_tabla_listos(proceso, longitud) {
+        if (longitud !== 0 && !longitud) {
+            longitud = colaListos.length - 1;
         }
 
         var tabla = d3.select('#tabla_procesos');
@@ -264,7 +266,7 @@
 
         var fila = tbody.append('tr')
             .attr('class', 'fila-proceso')
-            .attr('id', 'proceso-' + length);
+            .attr('id', 'proceso-' + longitud);
 
         fila.append('td')
             .text(proceso.nombre);
@@ -366,13 +368,13 @@
     Main.prototype.ejecutar = function() {
         crear_primer_proceso();
 
-        for (var index = 0; index < constants.PROCESOSINICIALES; index++) {
+        for (var index = 0; index < constantes.PROCESOSINICIALES; index++) {
             generar_proceso();
         }
 
         window.setInterval(function() {
             generar_proceso();
-        }, constants.TIEMPOESPERA);
+        }, constantes.TIEMPOESPERA);
 
         window.setInterval(function() {
             d3.select('#tiempo_actual')
