@@ -153,10 +153,12 @@
 
         ordenar_lista();
 
-        var tabla = d3.select('#tabla_procesos');
-        var tbody = tabla.select('tbody').html('');
+        d3.select('#tabla_procesos')
+            .select('tbody')
+            .html('');
 
-        var bar = d3.select('.bar').html('');
+        d3.select('.bar')
+            .html('');
 
         var colaListosLongitud = colaListos.length;
 
@@ -279,8 +281,8 @@
             longitud = colaListos.length - 1;
         }
 
-        var tabla = d3.select('#tabla_procesos');
-        var tbody = tabla.select('tbody');
+        var tbody = d3.select('#tabla_procesos')
+            .select('tbody');
 
         var fila = tbody.append('tr')
             .attr('class', 'fila-proceso')
