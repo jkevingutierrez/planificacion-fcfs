@@ -144,7 +144,8 @@
     }
 
     function actualizar_procesos(idProceso) {
-        for (var i = (Number(idProceso) + 1); i < colaListos.length; i++) {
+        var longitudCola = colaListos.length;
+        for (var i = (Number(idProceso) + 1); i < longitudCola; i++) {
             var procesoAnterior = colaListos[i-1];
             var finalizacionAnterior = 0;
 
