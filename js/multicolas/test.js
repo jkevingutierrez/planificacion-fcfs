@@ -447,6 +447,7 @@ function validar_proceso_en_ejecucion() {
                 procesoActual = indexProceso;
 
                 d3.select('#proceso_ejecucion').text(procesoInterno.nombre);
+                d3.select('#cola_ejecucion').text(procesoInterno.prioridad);
                 d3.select("#rafaga_proceso").text(procesoInterno.rafaga);
                 d3.select('#tiempo_restante').text(procesoInterno.finalizacion - tiempo);
             }
