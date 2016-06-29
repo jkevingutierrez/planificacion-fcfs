@@ -67,9 +67,6 @@ function actualizar_procesos(idProceso, cola, numeroCola) {
 
 function actualizar_columna_tabla_listos(id, proceso, numeroCola) {
     var tr = d3.select('#proceso-' + id + '-' + numeroCola).selectAll('td');
-    if (!tr.node()) {
-        console.log('#proceso-' + id + '-' + numeroCola);
-    }
 
     if (tr.node()) {
         var columnaComienzo = tr[0][3];
@@ -460,12 +457,10 @@ function validar_proceso_en_ejecucion() {
                 procesoInterno.prioridad--;
                 indexProcesoBloqueado = bloquear_proceso(indexProceso, undefined, cola, (indexCola + 1), true);
                 reanudar_proceso(indexProcesoBloqueado, undefined, (procesoInterno.prioridad), true);
-                console.log(procesoInterno);
             }
 
             // Round robin para la cola 3
-            if (procesoInterno.rafaga > tiempoQuantum && procesoInterno.comienzo + tiempoQuantum === tiempo && indexCola === 2 && procesoInterno.prioridad === 3) {
-                console.log('bloquear', procesoInterno);
+            if (procesoInterno.rafaga > tiempoQuantum && procesoInterno.comienzo + tiempoQuantum === tiempo && indexCola === 2 && procesoInterno.prioridad === 3 && procesoActual === indexProceso) {
                 indexProcesoBloqueado = bloquear_proceso(indexProceso, undefined, cola, (indexCola + 1));
                 reanudar_proceso(indexProcesoBloqueado);
             }
