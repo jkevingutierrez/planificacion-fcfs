@@ -5,7 +5,7 @@ var cola2 = [];
 var cola3 = [];
 
 // Clase proceso
-class Proceso{
+class Proceso {
   constructor(){
     this.nombre = 'Proceso';
     this.llegada = 0;
