@@ -70,3 +70,16 @@
 .texto-nombre {
     font-weight: bold;
 }
+#info{
+    z-index: 1; 
+    position: fixed;
+    bottom: 0px;
+    right: 5px;
+    font-size: 12px;
+    background-color: #fff;
+    width: 150px;
+    border: solid 1px;
+}
+h5 span{
+    color: red;
+}
